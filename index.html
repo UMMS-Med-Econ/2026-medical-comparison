@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UMMS 2026 Plan Year — Medical Plan Comparison</title>
+<meta name="description" content="Compare your current UMMS medical plan with the 2026–2027 plan year options. Per-paycheck deductions, plan design, and prescription costs." />
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f7f8fa;
+  --surface-2: #eef0f4;
+  --border: #e3e6ec;
+  --border-strong: #c8ccd4;
+  --text: #11151c;
+  --text-muted: #5b6472;
+  --text-faint: #8a93a3;
+  --accent: #0f4c81;
+  --accent-soft: #e6eef7;
+  --up: #b91c1c;
+  --up-soft: #fdecec;
+  --down: #047857;
+  --down-soft: #e3f4ec;
+  --shadow: 0 1px 2px rgba(15, 22, 36, 0.04), 0 4px 12px rgba(15, 22, 36, 0.04);
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+header.page-header {
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+  letter-spacing: -0.015em;
+}
+
+.subhead {
+  color: var(--text-muted);
+  font-size: 0.98rem;
+  margin: 0;
+  max-width: 720px;
+}
+
+.controls {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px 20px;
+  margin: 24px 0 28px;
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.field-help {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+
+select, input[type="text"] {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: #fff;
+  color: var(--text);
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%235b6472' d='M6 8L0 0h12z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+}
+
+select:focus, input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+.checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  background: #fff;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.93rem;
+}
+
+.check-row input { margin: 0; accent-color: var(--accent); }
+.check-row.disabled { opacity: 0.5; cursor: not-allowed; }
+
+.check-row.checked {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.network-toggle {
+  display: inline-flex;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.network-toggle button {
+  background: transparent;
+  border: 0;
+  padding: 7px 12px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.network-toggle button.active {
+  background: #fff;
+  color: var(--text);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  font-weight: 600;
+}
+
+.section-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 12px 0 18px;
+  flex-wrap: wrap;
+}
+
+.section-toolbar h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card.current {
+  border-color: var(--accent);
+  background: linear-gradient(180deg, var(--accent-soft) 0%, #fff 80px);
+}
+
+.card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plan-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-faint);
+}
+
+.plan-tag.current { color: var(--accent); }
+
+.plan-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.plan-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.premium {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.premium-amount {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.premium-cadence {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.premium-annual {
+  font-size: 0.92rem;
+  color: var(--text);
+  margin-top: 2px;
+}
+
+.delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.83rem;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.delta.up { background: var(--up-soft); color: var(--up); }
+.delta.down { background: var(--down-soft); color: var(--down); }
+.delta.flat { background: var(--surface-2); color: var(--text-muted); }
+
+.delta-detail {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 2px -2px;
+}
+
+.section-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 8px;
+}
+
+.kv {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  padding: 4px 0;
+  gap: 12px;
+}
+
+.kv .k { color: var(--text-muted); flex-shrink: 0; }
+.kv .v { color: var(--text); text-align: right; font-weight: 500; }
+
+.kv + .kv { border-top: 1px solid var(--border); }
+
+.expand-toggle {
+  background: transparent;
+  border: 0;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 0 0;
+  font-family: inherit;
+  text-align: left;
+}
+
+.expand-toggle:hover { text-decoration: underline; }
+
+.collapsed-content { display: none; }
+
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  padding: 36px 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.empty-state strong { color: var(--text); }
+
+footer {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+footer p { margin: 0 0 8px; }
+
+.note-callout {
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+.rx-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
+  font-size: 0.85rem;
+  padding: 4px 0;
+  align-items: baseline;
+}
+
+.rx-row + .rx-row { border-top: 1px solid var(--border); }
+
+.rx-row .rx-label { color: var(--text-muted); }
+.rx-row .rx-val { font-weight: 500; }
+.rx-row .rx-head { font-size: 0.7rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+
+@media (max-width: 640px) {
+  .container { padding: 24px 16px 48px; }
+  h1 { font-size: 1.4rem; }
+  .premium-amount { font-size: 1.5rem; }
+  .controls { padding: 14px 14px 16px; }
+}
+
+@media print {
+  .controls, .expand-toggle, .network-toggle { display: none !important; }
+  .card { break-inside: avoid; border: 1px solid #999; }
+  body { background: #fff; }
+  .collapsed-content { display: block !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header class="page-header">
+  <div class="eyebrow">Open Enrollment</div>
+  <h1>UMMS Medical Plan Comparison — 2026–2027 Plan Year</h1>
+  <p class="subhead">Compare your current medical plan with up to two of the 2026–2027 options. See how your per-paycheck deduction and plan design will change.</p>
+</header>
+
+<div class="note-callout">
+  All figures come directly from the official 2025 and 2026–2027 UMMS Benefits Guides. This tool stores no information — your selections live only in your browser session.
+</div>
+
+<section class="controls" aria-labelledby="controls-heading">
+  <h2 id="controls-heading" style="position:absolute;left:-9999px;">Your selections</h2>
+  <div class="controls-grid">
+    <div class="field">
+      <label for="tier">Coverage tier</label>
+      <select id="tier">
+        <option value="0">Team Member</option>
+        <option value="1">Team Member + Spouse</option>
+        <option value="2">Team Member + Child(ren)</option>
+        <option value="3">Team Member + Family</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="salary">Annual salary band</label>
+      <select id="salary"></select>
+      <div class="field-help">In $5,000 increments. Premiums change at salary-band boundaries.</div>
+    </div>
+
+    <div class="field">
+      <label for="current">Your current plan (2025–2026)</label>
+      <select id="current">
+        <option value="ppo_plus_2025">PPO+ (BluePreferred PPO+)</option>
+        <option value="ppo_2025">PPO (BluePreferred PPO)</option>
+        <option value="hdhp_2025">HDHP (BluePreferred HDHP)</option>
+        <option value="new">New to UMMS in 2026</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label id="alt-label">Compare with (up to 2 options)</label>
+      <div class="checkboxes" id="alt-options"></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-toolbar">
+  <h2>Plan-design network view</h2>
+  <div class="network-toggle" role="tablist" aria-label="Network">
+    <button data-net="inn_umms" class="active">UMMS Preferred</button>
+    <button data-net="inn_blue">BluePreferred</button>
+    <button data-net="oon">Out-of-Network</button>
+  </div>
+</div>
+
+<div id="cards" class="cards"></div>
+
+<footer>
+  <p><strong>Disclaimer.</strong> This tool produces estimates only, based on the published 2025 and 2026–2027 UMMS Benefits Guides. The official plan documents and Summary Plan Descriptions govern in case of any discrepancy. Premiums shown are pre-tax bi-weekly payroll deductions for full-time team members (FTE 0.90–1.00); part-time, supplemental/PRN, and tobacco-surcharge rates are not modeled. Dental, vision, and other ancillary benefits are not included.</p>
+  <p>Questions about your benefits should be directed to UMMS Human Resources. Salary bands change annually on July 1.</p>
+</footer>
+
+</div>
+
+<script>
+// ============================================================
+// DATA — verified against:
+//   Kelly Benefits — UMMS 2025 Team Member Guide, pp. 8, 9, 11
+//   UMMS 2026–2027 Benefits Guide, pp. 7, 8, 9, 12
+// ============================================================
+
+const TIER_LABELS = ["Team Member", "Team Member + Spouse", "Team Member + Child(ren)", "Team Member + Family"];
+
+const PLANS = {
+  ppo_plus_2025: {
+    short: "PPO+", year: 2025, label: "BluePreferred PPO+",
+    inn_umms: { dInd:0,dFam:0, oopInd:3000,oopFam:6000, coins:"Not stated as %", pcp:"$10 copay", spec:"$20 copay", er:"$250 copay (waived if admitted)", hospIn:"Subject to deductible & coinsurance", hospOut:"Subject to deductible & coinsurance", urgent:"$15 copay" },
+    inn_blue: { dInd:500,dFam:1000, oopInd:3000,oopFam:6000, coins:"Not stated as %", pcp:"$20 copay", spec:"$40 copay", er:"$250 copay (waived if admitted)", hospIn:"Subject to deductible & coinsurance", hospOut:"Subject to deductible & coinsurance", urgent:"$30 copay" },
+    oon:      { dInd:600,dFam:1200, oopInd:3500,oopFam:7000, coins:"40% after deductible", pcp:"60% after deductible", spec:"60% after deductible", er:"$250 copay (waived if admitted)", hospIn:"40% after deductible", hospOut:"40% after deductible", urgent:"60% after deductible" },
+    rxFamily: "ppo_2025"
+  },
+  ppo_2025: {
+    short: "PPO", year: 2025, label: "BluePreferred PPO",
+    inn_umms: { dInd:300,dFam:600, oopInd:3000,oopFam:6000, coins:"Not stated as %", pcp:"$10 copay", spec:"$20 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"Coinsurance after deductible", hospOut:"Coinsurance after deductible", urgent:"$15 copay" },
+    inn_blue: { dInd:1000,dFam:2000, oopInd:3000,oopFam:6000, coins:"Not stated as %", pcp:"$25 copay", spec:"$50 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"Coinsurance after deductible", hospOut:"Coinsurance after deductible", urgent:"$30 copay" },
+    oon:      { dInd:4000,dFam:8000, oopInd:7500,oopFam:15000, coins:"50% after deductible", pcp:"50% after deductible", spec:"50% after deductible", er:"10% after $250 copay (waived if admitted)", hospIn:"50% after deductible", hospOut:"50% after deductible", urgent:"50% after deductible" },
+    rxFamily: "ppo_2025"
+  },
+  hdhp_2025: {
+    short: "HDHP", year: 2025, label: "BluePreferred HDHP",
+    inn_umms: { dInd:1800,dFam:3600, oopInd:3000,oopFam:6000, coins:"10% after deductible", pcp:"$10 copay after deductible", spec:"$20 copay after deductible", er:"10% after $250 copay (waived if admitted)", hospIn:"Subject to deductible & coinsurance", hospOut:"Subject to deductible & coinsurance", urgent:"$15 copay after deductible" },
+    inn_blue: { dInd:2500,dFam:5000, oopInd:6000,oopFam:12000, coins:"30% after deductible", pcp:"30% after deductible", spec:"30% after deductible", er:"10% after $250 copay (waived if admitted)", hospIn:"Subject to deductible & coinsurance", hospOut:"Subject to deductible & coinsurance", urgent:"$30 copay after deductible" },
+    oon:      { dInd:5000,dFam:10000, oopInd:10000,oopFam:20000, coins:"50% after deductible", pcp:"50% after deductible", spec:"50% after deductible", er:"10% after $250 copay (waived if admitted)", hospIn:"50% after deductible", hospOut:"50% after deductible", urgent:"50% after deductible" },
+    rxFamily: "hdhp_2025"
+  },
+  ppo_plus_2026: {
+    short: "PPO+", year: 2026, label: "PPO+",
+    inn_umms: { dInd:0,dFam:0, oopInd:3000,oopFam:6000, coins:"0%", pcp:"$10 copay", spec:"$20 copay", er:"$250 copay (waived if admitted)", hospIn:"$500 copay", hospOut:"$250 copay", urgent:"$15 copay" },
+    inn_blue: { dInd:750,dFam:1500, oopInd:3500,oopFam:7000, coins:"20%", pcp:"$20 copay", spec:"$40 copay", er:"$250 copay (waived if admitted)", hospIn:"$250 copay, 20% after deductible", hospOut:"20% after deductible", urgent:"$30 copay" },
+    oon:      { dInd:1000,dFam:2000, oopInd:4000,oopFam:8000, coins:"40% after deductible", pcp:"40% after deductible", spec:"40% after deductible", er:"$250 copay per visit (waived if admitted)", hospIn:"40% after deductible", hospOut:"40% after deductible", urgent:"40% after deductible" },
+    rxFamily: "ppo_2026"
+  },
+  ppo_2026: {
+    short: "PPO", year: 2026, label: "PPO",
+    inn_umms: { dInd:800,dFam:1600, oopInd:3500,oopFam:7000, coins:"10%", pcp:"$10 copay", spec:"$20 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"10% after deductible", hospOut:"10% after deductible", urgent:"$15 copay" },
+    inn_blue: { dInd:1500,dFam:3000, oopInd:3500,oopFam:7000, coins:"30%", pcp:"$25 copay", spec:"$50 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"30% after deductible", hospOut:"30% after deductible", urgent:"$30 copay" },
+    oon:      { dInd:4000,dFam:8000, oopInd:8000,oopFam:16000, coins:"50% after deductible", pcp:"50% after deductible", spec:"50% after deductible", er:"10% after $250 copay (waived if admitted)", hospIn:"50% after deductible", hospOut:"50% after deductible", urgent:"50% after deductible" },
+    rxFamily: "ppo_2026"
+  },
+  hdhp_2026: {
+    short: "HDHP", year: 2026, label: "HDHP",
+    inn_umms: { dInd:2000,dFam:4000, oopInd:4000,oopFam:8000, coins:"10% after deductible", pcp:"$10 copay after deductible", spec:"$20 copay after deductible", er:"Deductible, then 10% after $250 copay", hospIn:"10% after deductible", hospOut:"10% after deductible", urgent:"$15 copay after deductible" },
+    inn_blue: { dInd:2700,dFam:5400, oopInd:6200,oopFam:12400, coins:"30% after deductible", pcp:"30% after deductible", spec:"30% after deductible", er:"Deductible, then 10% after $250 copay", hospIn:"30% after deductible", hospOut:"30% after deductible", urgent:"$30 copay after deductible" },
+    oon:      { dInd:6000,dFam:12000, oopInd:12000,oopFam:24000, coins:"50% after deductible", pcp:"50% after deductible", spec:"50% after deductible", er:"50% after deductible", hospIn:"50% after deductible", hospOut:"50% after deductible", urgent:"50% after deductible" },
+    rxFamily: "hdhp_2026"
+  }
+};
+
+// Bi-weekly premiums by [tier index] for each band.
+// 2025 bands: $0–$49,999 / $50K–$149,999 / $150K+
+// 2026 bands: $0–$54,999.99 / $55K–$74,999.99 / $75K–$174,999.99 / $175K+
+const PREMIUMS = {
+  ppo_plus_2025: [
+    { max: 49999, p: [90.05, 226.81, 174.85, 267.22] },
+    { max: 149999, p: [95.47, 247.68, 183.59, 291.81] },
+    { max: Infinity, p: [110.06, 285.54, 220.13, 336.42] }
+  ],
+  ppo_2025: [
+    { max: 49999, p: [54.70, 141.92, 109.40, 167.20] },
+    { max: 149999, p: [59.73, 154.97, 114.87, 182.59] },
+    { max: Infinity, p: [68.87, 178.66, 137.73, 210.50] }
+  ],
+  hdhp_2025: [
+    { max: 49999, p: [32.07, 83.25, 64.13, 98.05] },
+    { max: 149999, p: [35.02, 90.91, 67.34, 107.07] },
+    { max: Infinity, p: [40.37, 104.80, 80.74, 123.44] }
+  ],
+  ppo_plus_2026: [
+    { max: 54999.99, p: [94.55, 260.06, 183.59, 306.40] },
+    { max: 74999.99, p: [100.24, 283.99, 192.77, 334.59] },
+    { max: 174999.99, p: [115.56, 327.40, 231.14, 385.74] },
+    { max: Infinity, p: [127.12, 360.14, 254.25, 424.31] }
+  ],
+  ppo_2026: [
+    { max: 54999.99, p: [54.70, 153.48, 109.40, 180.83] },
+    { max: 74999.99, p: [59.73, 167.60, 114.87, 197.47] },
+    { max: 174999.99, p: [68.87, 193.22, 137.73, 227.65] },
+    { max: Infinity, p: [75.76, 212.54, 151.50, 250.42] }
+  ],
+  hdhp_2026: [
+    { max: 54999.99, p: [30.46, 83.04, 60.92, 97.81] },
+    { max: 74999.99, p: [33.27, 90.68, 63.97, 106.80] },
+    { max: 174999.99, p: [38.35, 104.54, 76.70, 123.13] },
+    { max: Infinity, p: [42.18, 114.99, 84.37, 135.45] }
+  ]
+};
+
+// Prescriptions
+// 2025 retail = up to 34-day supply; 2026 retail = up to 30-day supply.
+// For HDHP plans: deductible applies first; copays/coinsurance shown apply after the deductible.
+const RX = {
+  ppo_2025: {
+    cadenceLabel: "Up to 34-day supply",
+    retail: [
+      { tier: "Generic", umms: "$5", cvs: "$10" },
+      { tier: "Preferred Brand", umms: "$10", cvs: "$30" },
+      { tier: "Non-Preferred Brand", umms: "$15", cvs: "$40" },
+      { tier: "Specialty (Generic + Brand)", umms: "$50", cvs: "$50" }
+    ],
+    day90: [
+      { tier: "Generic", val: "$10" },
+      { tier: "Preferred Brand", val: "$20" },
+      { tier: "Non-Preferred Brand", val: "$30" },
+      { tier: "Specialty", val: "Not offered" }
+    ],
+    day90Note: "2025 90-day price applied to UMMS, CVS, or Mail Order — single combined column."
+  },
+  hdhp_2025: {
+    cadenceLabel: "Up to 34-day supply (deductible applies first)",
+    retail: [
+      { tier: "Generic", umms: "$5", cvs: "$10" },
+      { tier: "Preferred Brand", umms: "$10", cvs: "$35" },
+      { tier: "Non-Preferred Brand", umms: "$15", cvs: "$70" },
+      { tier: "Specialty (Generic + Brand)", umms: "$50", cvs: "$50" }
+    ],
+    day90: [
+      { tier: "Generic", val: "$10" },
+      { tier: "Preferred Brand", val: "$20" },
+      { tier: "Non-Preferred Brand", val: "$30" },
+      { tier: "Specialty", val: "Not offered" }
+    ],
+    day90Note: "2025 90-day price applied to UMMS, CVS, or Mail Order — single combined column. HDHP enrollees pay full cost of prescriptions until deductible is met."
+  },
+  ppo_2026: {
+    cadenceLabel: "Up to 30-day supply",
+    retail: [
+      { tier: "Generic", umms: "$10", cvs: "$12" },
+      { tier: "Preferred Brand", umms: "$25", cvs: "$40" },
+      { tier: "Non-Preferred Brand", umms: "$50", cvs: "$70" },
+      { tier: "Specialty Generic", umms: "$125", cvs: "$125" },
+      { tier: "Specialty Brand", umms: "20% coinsurance*", cvs: "20% up to $200**" },
+      { tier: "Weight-Loss GLP-1s", umms: "$200", cvs: "$200" }
+    ],
+    day90: [
+      { tier: "Generic", umms: "$30", cvs: "$36" },
+      { tier: "Preferred Brand", umms: "$75", cvs: "$120" },
+      { tier: "Non-Preferred Brand", umms: "$150", cvs: "$210" },
+      { tier: "Specialty / GLP-1", umms: "Not offered", cvs: "Not offered" }
+    ],
+    day90Note: "*Coinsurance is waived for team members using the Copay Manufacturer's Assistance Program. **Limited Distribution Drugs (LDD) and drugs not available at UMMS In-House Pharmacy."
+  },
+  hdhp_2026: {
+    cadenceLabel: "Up to 30-day supply (deductible applies first)",
+    retail: [
+      { tier: "Generic", umms: "$10", cvs: "$12" },
+      { tier: "Preferred Brand", umms: "$25", cvs: "$40" },
+      { tier: "Non-Preferred Brand", umms: "$50", cvs: "$70" },
+      { tier: "Specialty Generic", umms: "$125", cvs: "$125" },
+      { tier: "Specialty Brand", umms: "$125", cvs: "$125**" },
+      { tier: "Weight-Loss GLP-1s", umms: "$200", cvs: "$200" }
+    ],
+    day90: [
+      { tier: "Generic", umms: "$30", cvs: "$36" },
+      { tier: "Preferred Brand", umms: "$75", cvs: "$120" },
+      { tier: "Non-Preferred Brand", umms: "$150", cvs: "$210" },
+      { tier: "Specialty / GLP-1", umms: "Not offered", cvs: "Not offered" }
+    ],
+    day90Note: "**Limited Distribution Drugs (LDD) and drugs not available at UMMS In-House Pharmacy. HDHP enrollees pay full cost of prescriptions until deductible is met."
+  }
+};
+
+const ALT_PLAN_KEYS = ["ppo_plus_2026", "ppo_2026", "hdhp_2026"];
+
+// ============================================================
+// STATE
+// ============================================================
+const state = {
+  tier: 0,
+  salary: 75000,
+  current: "ppo_plus_2025",
+  alts: ["ppo_2026", "hdhp_2026"],
+  network: "inn_umms"
+};
+
+// ============================================================
+// HELPERS
+// ============================================================
+function lookupPremium(planKey, salary, tierIdx) {
+  const bands = PREMIUMS[planKey];
+  for (const b of bands) {
+    if (salary <= b.max) return b.p[tierIdx];
+  }
+  return null;
+}
+
+function fmtUSD(n, opts={}) {
+  if (n === null || n === undefined) return "—";
+  const fractionDigits = opts.cents ? 2 : 0;
+  return n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits });
+}
+
+function fmtSigned(n, opts={}) {
+  const sign = n > 0 ? "+" : (n < 0 ? "−" : "");
+  const abs = Math.abs(n);
+  const fractionDigits = opts.cents ? 2 : 0;
+  return sign + abs.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits });
+}
+
+function deltaClass(n) {
+  if (Math.abs(n) < 0.005) return "flat";
+  return n > 0 ? "up" : "down";
+}
+
+function deltaArrow(n) {
+  if (Math.abs(n) < 0.005) return "—";
+  return n > 0 ? "▲" : "▼";
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function renderSalaryOptions() {
+  const sel = document.getElementById("salary");
+  let html = "";
+  for (let s = 25000; s <= 250000; s += 5000) {
+    html += `<option value="${s}">${fmtUSD(s)}${s === 250000 ? "+" : ""}</option>`;
+  }
+  sel.innerHTML = html;
+  sel.value = state.salary;
+}
+
+function renderAltCheckboxes() {
+  const container = document.getElementById("alt-options");
+  const isNew = state.current === "new";
+  const maxAllowed = isNew ? 3 : 2;
+  document.getElementById("alt-label").textContent = `Compare with (up to ${maxAllowed} options)`;
+
+  let html = "";
+  for (const key of ALT_PLAN_KEYS) {
+    const checked = state.alts.includes(key);
+    const otherChecked = state.alts.filter(a => a !== key).length;
+    const wouldExceed = !checked && otherChecked >= maxAllowed;
+    html += `<label class="check-row${checked ? " checked" : ""}${wouldExceed ? " disabled" : ""}">
+      <input type="checkbox" data-plan="${key}" ${checked ? "checked" : ""} ${wouldExceed ? "disabled" : ""} />
+      <span>${PLANS[key].label} (2026)</span>
+    </label>`;
+  }
+  container.innerHTML = html;
+  container.querySelectorAll("input[type=checkbox]").forEach(cb => {
+    cb.addEventListener("change", e => {
+      const plan = e.target.dataset.plan;
+      if (e.target.checked) {
+        if (!state.alts.includes(plan)) state.alts.push(plan);
+        if (state.alts.length > maxAllowed) state.alts = state.alts.slice(0, maxAllowed);
+      } else {
+        state.alts = state.alts.filter(a => a !== plan);
+      }
+      renderAltCheckboxes();
+      renderCards();
+    });
+  });
+}
+
+function planDesignRows(plan, network) {
+  const n = plan[network];
+  if (!n) return "";
+  return `
+    <div class="kv"><span class="k">Deductible (Ind / Fam)</span><span class="v">${fmtUSD(n.dInd)} / ${fmtUSD(n.dFam)}</span></div>
+    <div class="kv"><span class="k">Out-of-pocket max (Ind / Fam)</span><span class="v">${fmtUSD(n.oopInd)} / ${fmtUSD(n.oopFam)}</span></div>
+    <div class="kv"><span class="k">Coinsurance</span><span class="v">${n.coins}</span></div>
+    <div class="kv"><span class="k">Primary care visit</span><span class="v">${n.pcp}</span></div>
+    <div class="kv"><span class="k">Specialist visit</span><span class="v">${n.spec}</span></div>
+    <div class="kv"><span class="k">Hospital inpatient</span><span class="v">${n.hospIn}</span></div>
+    <div class="kv"><span class="k">Hospital outpatient</span><span class="v">${n.hospOut}</span></div>
+    <div class="kv"><span class="k">Emergency room</span><span class="v">${n.er}</span></div>
+    <div class="kv"><span class="k">Urgent care</span><span class="v">${n.urgent}</span></div>
+  `;
+}
+
+function rxRows(rxKey) {
+  const rx = RX[rxKey];
+  if (!rx) return "";
+  let h = `<div class="rx-row"><span class="rx-label rx-head">${rx.cadenceLabel}</span><span class="rx-val rx-head">UMMS Pharmacy</span><span class="rx-val rx-head">CVS</span></div>`;
+  for (const r of rx.retail) {
+    h += `<div class="rx-row"><span class="rx-label">${r.tier}</span><span class="rx-val">${r.umms}</span><span class="rx-val">${r.cvs}</span></div>`;
+  }
+  // 90-day section
+  h += `<div class="rx-row" style="margin-top:8px;"><span class="rx-label rx-head">90-day supply</span><span class="rx-val rx-head">UMMS Pharmacy</span><span class="rx-val rx-head">CVS / Mail</span></div>`;
+  for (const r of rx.day90) {
+    if (r.val !== undefined) {
+      h += `<div class="rx-row"><span class="rx-label">${r.tier}</span><span class="rx-val" style="grid-column:span 2;text-align:right;">${r.val}</span></div>`;
+    } else {
+      h += `<div class="rx-row"><span class="rx-label">${r.tier}</span><span class="rx-val">${r.umms}</span><span class="rx-val">${r.cvs}</span></div>`;
+    }
+  }
+  if (rx.day90Note) {
+    h += `<div style="font-size:0.75rem;color:var(--text-faint);margin-top:8px;line-height:1.4;">${rx.day90Note}</div>`;
+  }
+  return h;
+}
+
+function buildCard({ planKey, isCurrent, biweekly, deltaBi, deltaAnnual }) {
+  const plan = PLANS[planKey];
+  const annual = biweekly * 26;
+  const tag = isCurrent ? "Your current plan" : `2026–2027 option`;
+  const tagClass = isCurrent ? "current" : "";
+  const yearLine = isCurrent ? "2025–2026 plan year" : "2026–2027 plan year";
+
+  let deltaBlock = "";
+  if (!isCurrent && deltaBi !== null) {
+    const cls = deltaClass(deltaBi);
+    const arrow = deltaArrow(deltaBi);
+    const annualSign = deltaAnnual === 0 ? "no change" : `${fmtSigned(deltaAnnual)} per year`;
+    deltaBlock = `
+      <div class="delta ${cls}">${arrow} ${fmtSigned(deltaBi, {cents:true})} per paycheck</div>
+      <div class="delta-detail">${annualSign} vs. your current plan</div>
+    `;
+  }
+
+  const designRows = planDesignRows(plan, state.network);
+  const rxKey = plan.rxFamily;
+
+  return `
+    <div class="card ${isCurrent ? "current" : ""}">
+      <div class="card-head">
+        <span class="plan-tag ${tagClass}">${tag}</span>
+        <span class="plan-name">${plan.label}</span>
+        <span class="plan-meta">${yearLine}</span>
+      </div>
+
+      <div class="premium">
+        <div class="premium-amount">${fmtUSD(biweekly, {cents:true})}</div>
+        <div class="premium-cadence">per paycheck (bi-weekly, 26/yr)</div>
+        <div class="premium-annual"><strong>${fmtUSD(annual)}</strong> per year</div>
+        ${deltaBlock}
+      </div>
+
+      <div class="divider"></div>
+
+      <div>
+        <div class="section-label">Plan design — ${networkLabel(state.network)}</div>
+        ${designRows}
+      </div>
+
+      <div class="divider"></div>
+
+      <div>
+        <div class="section-label">Prescription drugs</div>
+        ${rxRows(rxKey)}
+      </div>
+    </div>
+  `;
+}
+
+function networkLabel(net) {
+  return net === "inn_umms" ? "UMMS Preferred network"
+       : net === "inn_blue" ? "BluePreferred network"
+       : "Out-of-network";
+}
+
+function renderCards() {
+  const container = document.getElementById("cards");
+  const isNew = state.current === "new";
+
+  // figure out which plans to show
+  const cards = [];
+
+  let currentBi = null;
+  if (!isNew) {
+    currentBi = lookupPremium(state.current, state.salary, state.tier);
+    cards.push({ planKey: state.current, isCurrent: true, biweekly: currentBi, deltaBi: null, deltaAnnual: null });
+  }
+
+  for (const altKey of state.alts) {
+    const bi = lookupPremium(altKey, state.salary, state.tier);
+    const deltaBi = isNew ? null : (bi - currentBi);
+    const deltaAnnual = deltaBi === null ? null : Math.round((deltaBi * 26) * 100) / 100;
+    cards.push({ planKey: altKey, isCurrent: false, biweekly: bi, deltaBi, deltaAnnual });
+  }
+
+  if (cards.length === 0 || (isNew && state.alts.length === 0)) {
+    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+      <strong>Pick at least one 2026 plan to compare.</strong><br/>
+      Use the checkboxes above to add up to ${isNew ? 3 : 2} plan${isNew ? "s" : ""} side by side.
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = cards.map(buildCard).join("");
+}
+
+// ============================================================
+// INIT + EVENTS
+// ============================================================
+function init() {
+  renderSalaryOptions();
+  renderAltCheckboxes();
+  renderCards();
+
+  document.getElementById("tier").addEventListener("change", e => {
+    state.tier = parseInt(e.target.value, 10);
+    renderCards();
+  });
+
+  document.getElementById("salary").addEventListener("change", e => {
+    state.salary = parseInt(e.target.value, 10);
+    renderCards();
+  });
+
+  document.getElementById("current").addEventListener("change", e => {
+    state.current = e.target.value;
+    // when switching to/from "new", trim alts to fit allowed count
+    const max = state.current === "new" ? 3 : 2;
+    if (state.alts.length > max) state.alts = state.alts.slice(0, max);
+    renderAltCheckboxes();
+    renderCards();
+  });
+
+  document.querySelectorAll(".network-toggle button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".network-toggle button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      state.network = btn.dataset.net;
+      renderCards();
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+
+</body>
+</html>
