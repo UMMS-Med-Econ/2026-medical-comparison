@@ -288,6 +288,7 @@ select:focus, input:focus {
 .delta.up { background: var(--up-soft); color: var(--up); }
 .delta.down { background: var(--down-soft); color: var(--down); }
 .delta.flat { background: var(--surface-2); color: var(--text-muted); }
+.delta.baseline { background: var(--surface-2); color: var(--text-muted); border: 1px dashed var(--border-strong); }
 
 .delta-detail {
   font-size: 0.8rem;
@@ -782,6 +783,11 @@ function buildCard({ planKey, isCurrent, biweekly, deltaBi, deltaAnnual }) {
     deltaBlock = `
       <div class="delta ${cls}">${arrow} ${fmtSigned(deltaBi, {cents:true})} per paycheck</div>
       <div class="delta-detail">${annualSign} vs. your current plan</div>
+    `;
+  } else if (isCurrent) {
+    deltaBlock = `
+      <div class="delta baseline">Baseline — your current premium</div>
+      <div class="delta-detail">Compare 2026 options against this row</div>
     `;
   }
 
