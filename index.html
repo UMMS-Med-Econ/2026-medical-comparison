@@ -21,7 +21,8 @@
   --up-soft: #fdecec;
   --down: #047857;
   --down-soft: #e3f4ec;
-  --shadow: 0 1px 2px rgba(15, 22, 36, 0.04), 0 4px 12px rgba(15, 22, 36, 0.04);
+  --note: #92590f;
+  --note-soft: #fdf3e1;
   --radius: 10px;
   --radius-sm: 6px;
 }
@@ -40,366 +41,230 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.container {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 32px 24px 64px;
-}
+.container { max-width: 1280px; margin: 0 auto; padding: 32px 24px 64px; }
 
-header.page-header {
-  margin-bottom: 28px;
-}
+header.page-header { margin-bottom: 28px; }
 
 .eyebrow {
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  margin-bottom: 6px;
-  font-weight: 600;
+  font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-faint); margin-bottom: 6px; font-weight: 600;
 }
-
-h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin: 0 0 6px;
-  letter-spacing: -0.015em;
-}
-
-.subhead {
-  color: var(--text-muted);
-  font-size: 0.98rem;
-  margin: 0;
-  max-width: 720px;
-}
+h1 { font-size: 1.75rem; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.015em; }
+.subhead { color: var(--text-muted); font-size: 0.98rem; margin: 0; max-width: 720px; }
 
 .controls {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px 20px 20px;
-  margin: 24px 0 28px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px 20px; margin: 24px 0 28px;
 }
-
 .controls-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;
 }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.field-help { font-size: 0.78rem; color: var(--text-faint); }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.field label {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: 0.01em;
-}
-
-.field-help {
-  font-size: 0.78rem;
-  color: var(--text-faint);
-}
-
-select, input[type="text"] {
-  width: 100%;
-  padding: 9px 10px;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-sm);
-  font-size: 0.95rem;
-  font-family: inherit;
-  background: #fff;
-  color: var(--text);
-  appearance: none;
-  -webkit-appearance: none;
+select {
+  width: 100%; padding: 9px 10px;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  font-size: 0.95rem; font-family: inherit; background: #fff; color: var(--text);
+  appearance: none; -webkit-appearance: none;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%235b6472' d='M6 8L0 0h12z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  padding-right: 28px;
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
 }
+select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
 
-select:focus, input:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-  border-color: var(--accent);
-}
-
-.checkboxes {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
+.checkboxes { display: flex; flex-direction: column; gap: 6px; }
 .check-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 10px;
-  background: #fff;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  user-select: none;
-  font-size: 0.93rem;
+  display: flex; align-items: center; gap: 8px; padding: 7px 10px;
+  background: #fff; border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  cursor: pointer; user-select: none; font-size: 0.93rem;
 }
-
 .check-row input { margin: 0; accent-color: var(--accent); }
 .check-row.disabled { opacity: 0.5; cursor: not-allowed; }
-
-.check-row.checked {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-
-.network-toggle {
-  display: inline-flex;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 3px;
-  gap: 2px;
-  flex-wrap: wrap;
-}
-
-.network-toggle button {
-  background: transparent;
-  border: 0;
-  padding: 7px 12px;
-  font-size: 0.85rem;
-  font-family: inherit;
-  color: var(--text-muted);
-  cursor: pointer;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.network-toggle button.active {
-  background: #fff;
-  color: var(--text);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-  font-weight: 600;
-}
+.check-row.checked { border-color: var(--accent); background: var(--accent-soft); }
 
 .section-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin: 12px 0 18px;
-  flex-wrap: wrap;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; margin: 12px 0 14px; flex-wrap: wrap;
+}
+.section-toolbar h2 { font-size: 1.05rem; font-weight: 700; margin: 0; }
+
+.network-toggle {
+  display: inline-flex; background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 3px; gap: 2px; flex-wrap: wrap;
+}
+.network-toggle button {
+  background: transparent; border: 0; padding: 7px 12px;
+  font-size: 0.85rem; font-family: inherit; color: var(--text-muted);
+  cursor: pointer; border-radius: 4px; font-weight: 500;
+}
+.network-toggle button.active {
+  background: #fff; color: var(--text);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06); font-weight: 600;
 }
 
-.section-toolbar h2 {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin: 0;
+.note-callout {
+  background: var(--surface); border-left: 3px solid var(--accent); border-radius: 4px;
+  padding: 10px 14px; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 18px;
 }
+
+/* ============================================================
+   CARDS GRID — using CSS subgrid for cross-card row alignment.
+   Each card is a column. All cards share row tracks defined on
+   the parent, so corresponding rows line up regardless of wrap.
+   ============================================================ */
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
+}
+
+@media (min-width: 760px) {
+  .cards {
+    grid-template-columns: repeat(var(--n-cards, 3), minmax(0, 1fr));
+    grid-template-rows: repeat(60, auto);
+    column-gap: 16px;
+    row-gap: 0;
+  }
+  .card {
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-template-columns: 1fr;
+    row-gap: 0;
+  }
+  .slot.head, .slot.last { padding-left: 18px; padding-right: 18px; }
+  .slot { padding-left: 18px; padding-right: 18px; }
 }
 
 .card {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 18px 18px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  overflow: hidden;
 }
+.card.current { border-color: var(--accent); }
+.card.current .slot.tag-row { background: var(--accent-soft); }
 
-.card.current {
-  border-color: var(--accent);
-  background: linear-gradient(180deg, var(--accent-soft) 0%, #fff 80px);
-}
+.slot { padding: 6px 16px; align-self: stretch; min-height: 0; }
+.slot.tag-row { padding-top: 14px; }
+.slot.last { padding-bottom: 16px; }
 
-.card-head {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.plan-tag {
+.slot.tag-row .tag {
   display: inline-block;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--text-faint);
+  font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+  font-weight: 700; color: var(--text-faint);
+}
+.slot.tag-row .tag.current { color: var(--accent); }
+
+.slot.name {
+  font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em;
+  padding-top: 2px; padding-bottom: 2px;
 }
 
-.plan-tag.current { color: var(--accent); }
+.slot.meta { font-size: 0.78rem; color: var(--text-muted); padding-bottom: 10px; }
 
-.plan-name {
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+.slot.premium-amount {
+  font-size: 1.8rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15;
+  padding-top: 4px; padding-bottom: 0;
+}
+.slot.premium-cadence { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; padding-top: 0; padding-bottom: 0; }
+.slot.premium-annual { font-size: 0.92rem; padding-top: 2px; padding-bottom: 6px; }
+
+.slot.delta-row { padding-top: 4px; padding-bottom: 4px; min-height: 30px; }
+.slot.delta-2025-row { padding-top: 0; padding-bottom: 10px; min-height: 22px; }
+
+.slot.divider { padding: 0; }
+.slot.divider hr { border: 0; border-top: 1px solid var(--border); margin: 6px 0; }
+
+.slot.section-label {
+  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-faint); padding-top: 10px; padding-bottom: 8px;
 }
 
-.plan-meta {
-  font-size: 0.78rem;
-  color: var(--text-muted);
+.slot.kv {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline; column-gap: 12px;
+  padding-top: 6px; padding-bottom: 6px;
+  font-size: 0.88rem; border-top: 1px solid var(--border);
+}
+.slot.kv .k { color: var(--text-muted); }
+.slot.kv .v { color: var(--text); text-align: right; font-weight: 500; word-break: break-word; }
+.slot.kv .v .row-delta { display: block; }
+
+.slot.first-kv { border-top: 0 !important; }
+
+.slot.rx-head {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto auto;
+  column-gap: 10px;
+  font-size: 0.7rem; color: var(--text-faint);
+  text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700;
+  padding-top: 8px; padding-bottom: 4px;
+}
+.slot.rx-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto auto;
+  column-gap: 10px; align-items: baseline;
+  padding-top: 6px; padding-bottom: 6px;
+  font-size: 0.86rem; border-top: 1px solid var(--border);
+}
+.slot.rx-row .rx-label { color: var(--text-muted); }
+.slot.rx-row .rx-val { font-weight: 500; text-align: right; }
+.slot.rx-row .rx-val .row-delta { display: block; }
+
+.slot.rx-foot {
+  font-size: 0.74rem; color: var(--text-faint); line-height: 1.4;
+  padding-top: 8px; padding-bottom: 16px;
 }
 
-.premium {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.premium-amount {
-  font-size: 1.8rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-
-.premium-cadence {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.premium-annual {
-  font-size: 0.92rem;
-  color: var(--text);
-  margin-top: 2px;
-}
-
+/* Delta chips (premium) */
 .delta {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 6px;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 0.83rem;
-  font-weight: 600;
-  width: fit-content;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px; border-radius: 4px;
+  font-size: 0.83rem; font-weight: 600; width: fit-content;
 }
-
 .delta.up { background: var(--up-soft); color: var(--up); }
 .delta.down { background: var(--down-soft); color: var(--down); }
 .delta.flat { background: var(--surface-2); color: var(--text-muted); }
 .delta.baseline { background: var(--surface-2); color: var(--text-muted); border: 1px dashed var(--border-strong); }
+.delta-detail { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
+.delta.small { font-size: 0.75rem; padding: 2px 7px; font-weight: 600; }
 
-.delta-detail {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: 4px;
+/* Per-row change indicators (plan design + Rx) */
+.row-delta {
+  font-size: 0.72rem;
+  font-weight: 500;
+  margin-top: 2px;
+  display: block;
 }
+.row-delta.up { color: var(--up); }
+.row-delta.down { color: var(--down); }
+.row-delta.changed { color: var(--note); }
 
-.divider {
-  height: 1px;
-  background: var(--border);
-  margin: 2px -2px;
-}
-
-.section-label {
-  font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  margin-bottom: 8px;
-}
-
-.kv {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.88rem;
-  padding: 4px 0;
-  gap: 12px;
-}
-
-.kv .k { color: var(--text-muted); flex-shrink: 0; }
-.kv .v { color: var(--text); text-align: right; font-weight: 500; }
-
-.kv + .kv { border-top: 1px solid var(--border); }
-
-.expand-toggle {
-  background: transparent;
-  border: 0;
-  color: var(--accent);
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 6px 0 0;
-  font-family: inherit;
-  text-align: left;
-}
-
-.expand-toggle:hover { text-decoration: underline; }
-
-.collapsed-content { display: none; }
-
+/* Empty state */
 .empty-state {
-  background: var(--surface);
-  border: 1px dashed var(--border-strong);
-  border-radius: var(--radius);
-  padding: 36px 24px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.95rem;
+  background: var(--surface); border: 1px dashed var(--border-strong);
+  border-radius: var(--radius); padding: 36px 24px; text-align: center;
+  color: var(--text-muted); font-size: 0.95rem; grid-column: 1 / -1;
 }
-
 .empty-state strong { color: var(--text); }
 
 footer {
-  margin-top: 56px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-  font-size: 0.83rem;
-  color: var(--text-muted);
-  line-height: 1.6;
+  margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
+  font-size: 0.83rem; color: var(--text-muted); line-height: 1.6;
 }
-
 footer p { margin: 0 0 8px; }
 
-.note-callout {
-  background: var(--surface);
-  border-left: 3px solid var(--accent);
-  border-radius: 4px;
-  padding: 10px 14px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 18px;
-}
-
-.rx-row {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 12px;
-  font-size: 0.85rem;
-  padding: 4px 0;
-  align-items: baseline;
-}
-
-.rx-row + .rx-row { border-top: 1px solid var(--border); }
-
-.rx-row .rx-label { color: var(--text-muted); }
-.rx-row .rx-val { font-weight: 500; }
-.rx-row .rx-head { font-size: 0.7rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
-
-@media (max-width: 640px) {
+@media (max-width: 759px) {
   .container { padding: 24px 16px 48px; }
   h1 { font-size: 1.4rem; }
-  .premium-amount { font-size: 1.5rem; }
-  .controls { padding: 14px 14px 16px; }
+  .slot.premium-amount { font-size: 1.5rem; }
 }
 
 @media print {
-  .controls, .expand-toggle, .network-toggle { display: none !important; }
+  .controls, .network-toggle { display: none !important; }
   .card { break-inside: avoid; border: 1px solid #999; }
   body { background: #fff; }
-  .collapsed-content { display: block !important; }
 }
 </style>
 </head>
@@ -410,7 +275,7 @@ footer p { margin: 0 0 8px; }
 <header class="page-header">
   <div class="eyebrow">Open Enrollment</div>
   <h1>UMMS Medical Plan Comparison — 2026–2027 Plan Year</h1>
-  <p class="subhead">Compare your current medical plan with up to two of the 2026–2027 options. See how your per-paycheck deduction and plan design will change.</p>
+  <p class="subhead">Compare your current medical plan with up to two of the 2026–2027 options. See how your per-paycheck deduction, plan design, and prescription costs will change.</p>
 </header>
 
 <div class="note-callout">
@@ -433,7 +298,7 @@ footer p { margin: 0 0 8px; }
     <div class="field">
       <label for="salary">Annual salary band</label>
       <select id="salary"></select>
-      <div class="field-help">In $5,000 increments. Premiums change at salary-band boundaries.</div>
+      <div class="field-help">$5K increments. Premiums change at salary-band boundaries.</div>
     </div>
 
     <div class="field">
@@ -480,54 +345,74 @@ footer p { margin: 0 0 8px; }
 
 const TIER_LABELS = ["Team Member", "Team Member + Spouse", "Team Member + Child(ren)", "Team Member + Family"];
 
+// d = deductible (Ind/Fam), oop = out-of-pocket max (Ind/Fam)
+// All other rows are short text values.
 const PLANS = {
   ppo_plus_2025: {
-    short: "PPO+", year: 2025, label: "BluePreferred PPO+",
-    inn_umms: { dInd:0,dFam:0, oopInd:3000,oopFam:6000, coins:"Not stated as %", pcp:"$10 copay", spec:"$20 copay", er:"$250 copay (waived if admitted)", hospIn:"Subject to deductible & coinsurance", hospOut:"Subject to deductible & coinsurance", urgent:"$15 copay" },
-    inn_blue: { dInd:500,dFam:1000, oopInd:3000,oopFam:6000, coins:"Not stated as %", pcp:"$20 copay", spec:"$40 copay", er:"$250 copay (waived if admitted)", hospIn:"Subject to deductible & coinsurance", hospOut:"Subject to deductible & coinsurance", urgent:"$30 copay" },
-    oon:      { dInd:600,dFam:1200, oopInd:3500,oopFam:7000, coins:"40% after deductible", pcp:"60% after deductible", spec:"60% after deductible", er:"$250 copay (waived if admitted)", hospIn:"40% after deductible", hospOut:"40% after deductible", urgent:"60% after deductible" },
+    short: "PPO+", year: 2025, label: "PPO+", longLabel: "BluePreferred PPO+",
+    inn_umms: { dInd:0,dFam:0, oopInd:3000,oopFam:6000, coins:"—", pcp:"$10 copay", spec:"$20 copay", er:"$250 copay (waived if admitted)", hospIn:"Ded + coins", hospOut:"Ded + coins", urgent:"$15 copay" },
+    inn_blue: { dInd:500,dFam:1000, oopInd:3000,oopFam:6000, coins:"—", pcp:"$20 copay", spec:"$40 copay", er:"$250 copay (waived if admitted)", hospIn:"Ded + coins", hospOut:"Ded + coins", urgent:"$30 copay" },
+    oon:      { dInd:600,dFam:1200, oopInd:3500,oopFam:7000, coins:"40% after ded.", pcp:"60% after ded.", spec:"60% after ded.", er:"$250 copay (waived if admitted)", hospIn:"40% after ded.", hospOut:"40% after ded.", urgent:"60% after ded." },
     rxFamily: "ppo_2025"
   },
   ppo_2025: {
-    short: "PPO", year: 2025, label: "BluePreferred PPO",
-    inn_umms: { dInd:300,dFam:600, oopInd:3000,oopFam:6000, coins:"Not stated as %", pcp:"$10 copay", spec:"$20 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"Coinsurance after deductible", hospOut:"Coinsurance after deductible", urgent:"$15 copay" },
-    inn_blue: { dInd:1000,dFam:2000, oopInd:3000,oopFam:6000, coins:"Not stated as %", pcp:"$25 copay", spec:"$50 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"Coinsurance after deductible", hospOut:"Coinsurance after deductible", urgent:"$30 copay" },
-    oon:      { dInd:4000,dFam:8000, oopInd:7500,oopFam:15000, coins:"50% after deductible", pcp:"50% after deductible", spec:"50% after deductible", er:"10% after $250 copay (waived if admitted)", hospIn:"50% after deductible", hospOut:"50% after deductible", urgent:"50% after deductible" },
+    short: "PPO", year: 2025, label: "PPO", longLabel: "BluePreferred PPO",
+    inn_umms: { dInd:300,dFam:600, oopInd:3000,oopFam:6000, coins:"—", pcp:"$10 copay", spec:"$20 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"Coins after ded.", hospOut:"Coins after ded.", urgent:"$15 copay" },
+    inn_blue: { dInd:1000,dFam:2000, oopInd:3000,oopFam:6000, coins:"—", pcp:"$25 copay", spec:"$50 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"Coins after ded.", hospOut:"Coins after ded.", urgent:"$30 copay" },
+    oon:      { dInd:4000,dFam:8000, oopInd:7500,oopFam:15000, coins:"50% after ded.", pcp:"50% after ded.", spec:"50% after ded.", er:"10% after $250 copay (waived if admitted)", hospIn:"50% after ded.", hospOut:"50% after ded.", urgent:"50% after ded." },
     rxFamily: "ppo_2025"
   },
   hdhp_2025: {
-    short: "HDHP", year: 2025, label: "BluePreferred HDHP",
-    inn_umms: { dInd:1800,dFam:3600, oopInd:3000,oopFam:6000, coins:"10% after deductible", pcp:"$10 copay after deductible", spec:"$20 copay after deductible", er:"10% after $250 copay (waived if admitted)", hospIn:"Subject to deductible & coinsurance", hospOut:"Subject to deductible & coinsurance", urgent:"$15 copay after deductible" },
-    inn_blue: { dInd:2500,dFam:5000, oopInd:6000,oopFam:12000, coins:"30% after deductible", pcp:"30% after deductible", spec:"30% after deductible", er:"10% after $250 copay (waived if admitted)", hospIn:"Subject to deductible & coinsurance", hospOut:"Subject to deductible & coinsurance", urgent:"$30 copay after deductible" },
-    oon:      { dInd:5000,dFam:10000, oopInd:10000,oopFam:20000, coins:"50% after deductible", pcp:"50% after deductible", spec:"50% after deductible", er:"10% after $250 copay (waived if admitted)", hospIn:"50% after deductible", hospOut:"50% after deductible", urgent:"50% after deductible" },
+    short: "HDHP", year: 2025, label: "HDHP", longLabel: "BluePreferred HDHP",
+    inn_umms: { dInd:1800,dFam:3600, oopInd:3000,oopFam:6000, coins:"10% after ded.", pcp:"$10 after ded.", spec:"$20 after ded.", er:"10% after $250 copay (waived if admitted)", hospIn:"Ded + coins", hospOut:"Ded + coins", urgent:"$15 after ded." },
+    inn_blue: { dInd:2500,dFam:5000, oopInd:6000,oopFam:12000, coins:"30% after ded.", pcp:"30% after ded.", spec:"30% after ded.", er:"10% after $250 copay (waived if admitted)", hospIn:"Ded + coins", hospOut:"Ded + coins", urgent:"$30 after ded." },
+    oon:      { dInd:5000,dFam:10000, oopInd:10000,oopFam:20000, coins:"50% after ded.", pcp:"50% after ded.", spec:"50% after ded.", er:"10% after $250 copay (waived if admitted)", hospIn:"50% after ded.", hospOut:"50% after ded.", urgent:"50% after ded." },
     rxFamily: "hdhp_2025"
   },
   ppo_plus_2026: {
-    short: "PPO+", year: 2026, label: "PPO+",
+    short: "PPO+", year: 2026, label: "PPO+", longLabel: "PPO+",
     inn_umms: { dInd:0,dFam:0, oopInd:3000,oopFam:6000, coins:"0%", pcp:"$10 copay", spec:"$20 copay", er:"$250 copay (waived if admitted)", hospIn:"$500 copay", hospOut:"$250 copay", urgent:"$15 copay" },
-    inn_blue: { dInd:750,dFam:1500, oopInd:3500,oopFam:7000, coins:"20%", pcp:"$20 copay", spec:"$40 copay", er:"$250 copay (waived if admitted)", hospIn:"$250 copay, 20% after deductible", hospOut:"20% after deductible", urgent:"$30 copay" },
-    oon:      { dInd:1000,dFam:2000, oopInd:4000,oopFam:8000, coins:"40% after deductible", pcp:"40% after deductible", spec:"40% after deductible", er:"$250 copay per visit (waived if admitted)", hospIn:"40% after deductible", hospOut:"40% after deductible", urgent:"40% after deductible" },
+    inn_blue: { dInd:750,dFam:1500, oopInd:3500,oopFam:7000, coins:"20%", pcp:"$20 copay", spec:"$40 copay", er:"$250 copay (waived if admitted)", hospIn:"$250 copay + 20% after ded.", hospOut:"20% after ded.", urgent:"$30 copay" },
+    oon:      { dInd:1000,dFam:2000, oopInd:4000,oopFam:8000, coins:"40% after ded.", pcp:"40% after ded.", spec:"40% after ded.", er:"$250 copay (waived if admitted)", hospIn:"40% after ded.", hospOut:"40% after ded.", urgent:"40% after ded." },
     rxFamily: "ppo_2026"
   },
   ppo_2026: {
-    short: "PPO", year: 2026, label: "PPO",
-    inn_umms: { dInd:800,dFam:1600, oopInd:3500,oopFam:7000, coins:"10%", pcp:"$10 copay", spec:"$20 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"10% after deductible", hospOut:"10% after deductible", urgent:"$15 copay" },
-    inn_blue: { dInd:1500,dFam:3000, oopInd:3500,oopFam:7000, coins:"30%", pcp:"$25 copay", spec:"$50 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"30% after deductible", hospOut:"30% after deductible", urgent:"$30 copay" },
-    oon:      { dInd:4000,dFam:8000, oopInd:8000,oopFam:16000, coins:"50% after deductible", pcp:"50% after deductible", spec:"50% after deductible", er:"10% after $250 copay (waived if admitted)", hospIn:"50% after deductible", hospOut:"50% after deductible", urgent:"50% after deductible" },
+    short: "PPO", year: 2026, label: "PPO", longLabel: "PPO",
+    inn_umms: { dInd:800,dFam:1600, oopInd:3500,oopFam:7000, coins:"10%", pcp:"$10 copay", spec:"$20 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"10% after ded.", hospOut:"10% after ded.", urgent:"$15 copay" },
+    inn_blue: { dInd:1500,dFam:3000, oopInd:3500,oopFam:7000, coins:"30%", pcp:"$25 copay", spec:"$50 copay", er:"10% after $250 copay (waived if admitted)", hospIn:"30% after ded.", hospOut:"30% after ded.", urgent:"$30 copay" },
+    oon:      { dInd:4000,dFam:8000, oopInd:8000,oopFam:16000, coins:"50% after ded.", pcp:"50% after ded.", spec:"50% after ded.", er:"10% after $250 copay (waived if admitted)", hospIn:"50% after ded.", hospOut:"50% after ded.", urgent:"50% after ded." },
     rxFamily: "ppo_2026"
   },
   hdhp_2026: {
-    short: "HDHP", year: 2026, label: "HDHP",
-    inn_umms: { dInd:2000,dFam:4000, oopInd:4000,oopFam:8000, coins:"10% after deductible", pcp:"$10 copay after deductible", spec:"$20 copay after deductible", er:"Deductible, then 10% after $250 copay", hospIn:"10% after deductible", hospOut:"10% after deductible", urgent:"$15 copay after deductible" },
-    inn_blue: { dInd:2700,dFam:5400, oopInd:6200,oopFam:12400, coins:"30% after deductible", pcp:"30% after deductible", spec:"30% after deductible", er:"Deductible, then 10% after $250 copay", hospIn:"30% after deductible", hospOut:"30% after deductible", urgent:"$30 copay after deductible" },
-    oon:      { dInd:6000,dFam:12000, oopInd:12000,oopFam:24000, coins:"50% after deductible", pcp:"50% after deductible", spec:"50% after deductible", er:"50% after deductible", hospIn:"50% after deductible", hospOut:"50% after deductible", urgent:"50% after deductible" },
+    short: "HDHP", year: 2026, label: "HDHP", longLabel: "HDHP",
+    inn_umms: { dInd:2000,dFam:4000, oopInd:4000,oopFam:8000, coins:"10% after ded.", pcp:"$10 after ded.", spec:"$20 after ded.", er:"Ded., then 10% after $250 copay", hospIn:"10% after ded.", hospOut:"10% after ded.", urgent:"$15 after ded." },
+    inn_blue: { dInd:2700,dFam:5400, oopInd:6200,oopFam:12400, coins:"30% after ded.", pcp:"30% after ded.", spec:"30% after ded.", er:"Ded., then 10% after $250 copay", hospIn:"30% after ded.", hospOut:"30% after ded.", urgent:"$30 after ded." },
+    oon:      { dInd:6000,dFam:12000, oopInd:12000,oopFam:24000, coins:"50% after ded.", pcp:"50% after ded.", spec:"50% after ded.", er:"50% after ded.", hospIn:"50% after ded.", hospOut:"50% after ded.", urgent:"50% after ded." },
     rxFamily: "hdhp_2026"
   }
 };
 
-// Bi-weekly premiums by [tier index] for each band.
-// 2025 bands: $0–$49,999 / $50K–$149,999 / $150K+
-// 2026 bands: $0–$54,999.99 / $55K–$74,999.99 / $75K–$174,999.99 / $175K+
+// Sibling map: each 2026 plan's 2025 equivalent (and vice-versa).
+const SIBLING = {
+  ppo_plus_2026: "ppo_plus_2025", ppo_plus_2025: "ppo_plus_2026",
+  ppo_2026: "ppo_2025", ppo_2025: "ppo_2026",
+  hdhp_2026: "hdhp_2025", hdhp_2025: "hdhp_2026"
+};
+
+// Plan-design rows in display order
+const ROW_DEFS = [
+  { key: "deductible", label: "Deductible (Ind/Fam)", kind: "pair", fields: ["dInd","dFam"] },
+  { key: "oop", label: "OOP max (Ind/Fam)", kind: "pair", fields: ["oopInd","oopFam"] },
+  { key: "coins", label: "Coinsurance", kind: "text" },
+  { key: "pcp", label: "Primary care", kind: "text" },
+  { key: "spec", label: "Specialist", kind: "text" },
+  { key: "hospIn", label: "Hospital inpatient", kind: "text" },
+  { key: "hospOut", label: "Hospital outpatient", kind: "text" },
+  { key: "er", label: "Emergency room", kind: "text" },
+  { key: "urgent", label: "Urgent care", kind: "text" }
+];
+
+// Premium tables (bi-weekly) by salary band, tier order [TM, TM+S, TM+C, Family]
 const PREMIUMS = {
   ppo_plus_2025: [
     { max: 49999, p: [90.05, 226.81, 174.85, 267.22] },
@@ -564,77 +449,35 @@ const PREMIUMS = {
   ]
 };
 
-// Prescriptions
-// 2025 retail = up to 34-day supply; 2026 retail = up to 30-day supply.
-// For HDHP plans: deductible applies first; copays/coinsurance shown apply after the deductible.
+// Prescription drugs — normalized to identical 6-tier shape across years
+// for clean row alignment.
+const RX_TIERS = ["Generic", "Preferred Brand", "Non-Preferred Brand", "Specialty Generic", "Specialty Brand", "Weight-Loss GLP-1s"];
+const RX_TIERS_90 = ["Generic", "Preferred Brand", "Non-Preferred Brand", "Specialty / GLP-1"];
+
 const RX = {
   ppo_2025: {
-    cadenceLabel: "Up to 34-day supply",
-    retail: [
-      { tier: "Generic", umms: "$5", cvs: "$10" },
-      { tier: "Preferred Brand", umms: "$10", cvs: "$30" },
-      { tier: "Non-Preferred Brand", umms: "$15", cvs: "$40" },
-      { tier: "Specialty (Generic + Brand)", umms: "$50", cvs: "$50" }
-    ],
-    day90: [
-      { tier: "Generic", val: "$10" },
-      { tier: "Preferred Brand", val: "$20" },
-      { tier: "Non-Preferred Brand", val: "$30" },
-      { tier: "Specialty", val: "Not offered" }
-    ],
-    day90Note: "2025 90-day price applied to UMMS, CVS, or Mail Order — single combined column."
+    cadence: "Up to 34-day supply",
+    retail: { Generic:["$5","$10"], "Preferred Brand":["$10","$30"], "Non-Preferred Brand":["$15","$40"], "Specialty Generic":["$50 combined","$50 combined"], "Specialty Brand":["$50 combined","$50 combined"], "Weight-Loss GLP-1s":["—","—"] },
+    day90:  { Generic:["$10","$10"], "Preferred Brand":["$20","$20"], "Non-Preferred Brand":["$30","$30"], "Specialty / GLP-1":["Not offered","Not offered"] },
+    foot: "2025 90-day supply applied a single price across UMMS and CVS."
   },
   hdhp_2025: {
-    cadenceLabel: "Up to 34-day supply (deductible applies first)",
-    retail: [
-      { tier: "Generic", umms: "$5", cvs: "$10" },
-      { tier: "Preferred Brand", umms: "$10", cvs: "$35" },
-      { tier: "Non-Preferred Brand", umms: "$15", cvs: "$70" },
-      { tier: "Specialty (Generic + Brand)", umms: "$50", cvs: "$50" }
-    ],
-    day90: [
-      { tier: "Generic", val: "$10" },
-      { tier: "Preferred Brand", val: "$20" },
-      { tier: "Non-Preferred Brand", val: "$30" },
-      { tier: "Specialty", val: "Not offered" }
-    ],
-    day90Note: "2025 90-day price applied to UMMS, CVS, or Mail Order — single combined column. HDHP enrollees pay full cost of prescriptions until deductible is met."
+    cadence: "Up to 34-day supply (deductible applies first)",
+    retail: { Generic:["$5","$10"], "Preferred Brand":["$10","$35"], "Non-Preferred Brand":["$15","$70"], "Specialty Generic":["$50 combined","$50 combined"], "Specialty Brand":["$50 combined","$50 combined"], "Weight-Loss GLP-1s":["—","—"] },
+    day90:  { Generic:["$10","$10"], "Preferred Brand":["$20","$20"], "Non-Preferred Brand":["$30","$30"], "Specialty / GLP-1":["Not offered","Not offered"] },
+    foot: "HDHP enrollees pay full cost of prescriptions until the deductible is met. 2025 90-day supply applied a single price across UMMS and CVS."
   },
   ppo_2026: {
-    cadenceLabel: "Up to 30-day supply",
-    retail: [
-      { tier: "Generic", umms: "$10", cvs: "$12" },
-      { tier: "Preferred Brand", umms: "$25", cvs: "$40" },
-      { tier: "Non-Preferred Brand", umms: "$50", cvs: "$70" },
-      { tier: "Specialty Generic", umms: "$125", cvs: "$125" },
-      { tier: "Specialty Brand", umms: "20% coinsurance*", cvs: "20% up to $200**" },
-      { tier: "Weight-Loss GLP-1s", umms: "$200", cvs: "$200" }
-    ],
-    day90: [
-      { tier: "Generic", umms: "$30", cvs: "$36" },
-      { tier: "Preferred Brand", umms: "$75", cvs: "$120" },
-      { tier: "Non-Preferred Brand", umms: "$150", cvs: "$210" },
-      { tier: "Specialty / GLP-1", umms: "Not offered", cvs: "Not offered" }
-    ],
-    day90Note: "*Coinsurance is waived for team members using the Copay Manufacturer's Assistance Program. **Limited Distribution Drugs (LDD) and drugs not available at UMMS In-House Pharmacy."
+    cadence: "Up to 30-day supply",
+    retail: { Generic:["$10","$12"], "Preferred Brand":["$25","$40"], "Non-Preferred Brand":["$50","$70"], "Specialty Generic":["$125","$125"], "Specialty Brand":["20% coins.*","20% to $200**"], "Weight-Loss GLP-1s":["$200","$200"] },
+    day90:  { Generic:["$30","$36"], "Preferred Brand":["$75","$120"], "Non-Preferred Brand":["$150","$210"], "Specialty / GLP-1":["Not offered","Not offered"] },
+    foot: "*Coinsurance is waived for the Copay Manufacturer's Assistance Program. **Limited Distribution Drugs and drugs not available at UMMS In-House Pharmacy."
   },
   hdhp_2026: {
-    cadenceLabel: "Up to 30-day supply (deductible applies first)",
-    retail: [
-      { tier: "Generic", umms: "$10", cvs: "$12" },
-      { tier: "Preferred Brand", umms: "$25", cvs: "$40" },
-      { tier: "Non-Preferred Brand", umms: "$50", cvs: "$70" },
-      { tier: "Specialty Generic", umms: "$125", cvs: "$125" },
-      { tier: "Specialty Brand", umms: "$125", cvs: "$125**" },
-      { tier: "Weight-Loss GLP-1s", umms: "$200", cvs: "$200" }
-    ],
-    day90: [
-      { tier: "Generic", umms: "$30", cvs: "$36" },
-      { tier: "Preferred Brand", umms: "$75", cvs: "$120" },
-      { tier: "Non-Preferred Brand", umms: "$150", cvs: "$210" },
-      { tier: "Specialty / GLP-1", umms: "Not offered", cvs: "Not offered" }
-    ],
-    day90Note: "**Limited Distribution Drugs (LDD) and drugs not available at UMMS In-House Pharmacy. HDHP enrollees pay full cost of prescriptions until deductible is met."
+    cadence: "Up to 30-day supply (deductible applies first)",
+    retail: { Generic:["$10","$12"], "Preferred Brand":["$25","$40"], "Non-Preferred Brand":["$50","$70"], "Specialty Generic":["$125","$125"], "Specialty Brand":["$125","$125**"], "Weight-Loss GLP-1s":["$200","$200"] },
+    day90:  { Generic:["$30","$36"], "Preferred Brand":["$75","$120"], "Non-Preferred Brand":["$150","$210"], "Specialty / GLP-1":["Not offered","Not offered"] },
+    foot: "HDHP enrollees pay full cost of prescriptions until the deductible is met. **Limited Distribution Drugs and drugs not available at UMMS In-House Pharmacy."
   }
 };
 
@@ -655,10 +498,7 @@ const state = {
 // HELPERS
 // ============================================================
 function lookupPremium(planKey, salary, tierIdx) {
-  const bands = PREMIUMS[planKey];
-  for (const b of bands) {
-    if (salary <= b.max) return b.p[tierIdx];
-  }
+  for (const b of PREMIUMS[planKey]) if (salary <= b.max) return b.p[tierIdx];
   return null;
 }
 
@@ -667,22 +507,60 @@ function fmtUSD(n, opts={}) {
   const fractionDigits = opts.cents ? 2 : 0;
   return n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits });
 }
-
 function fmtSigned(n, opts={}) {
   const sign = n > 0 ? "+" : (n < 0 ? "−" : "");
   const abs = Math.abs(n);
   const fractionDigits = opts.cents ? 2 : 0;
   return sign + abs.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits });
 }
+function deltaClass(n) { if (Math.abs(n) < 0.005) return "flat"; return n > 0 ? "up" : "down"; }
+function deltaArrow(n) { if (Math.abs(n) < 0.005) return "—"; return n > 0 ? "▲" : "▼"; }
 
-function deltaClass(n) {
-  if (Math.abs(n) < 0.005) return "flat";
-  return n > 0 ? "up" : "down";
+// Compare a row across sibling-year plans. Returns null (unchanged) or
+// { dir: "up|down|changed", html: "...indicator html..." }.
+function compareRowVsPriorYear(planKey, network, rowDef) {
+  const prior = SIBLING[planKey];
+  if (!prior) return null;
+  const a = PLANS[prior][network], b = PLANS[planKey][network];
+  if (!a || !b) return null;
+  if (rowDef.kind === "pair") {
+    const [f1, f2] = rowDef.fields;
+    const dInd = b[f1] - a[f1], dFam = b[f2] - a[f2];
+    if (dInd === 0 && dFam === 0) return null;
+    const dir = (dInd > 0 || dFam > 0) ? "up" : (dInd < 0 || dFam < 0 ? "down" : "changed");
+    return { dir, html: `from ${fmtUSD(a[f1])} / ${fmtUSD(a[f2])}` };
+  }
+  // text
+  if (a[rowDef.key] === b[rowDef.key]) return null;
+  return { dir: "changed", html: `was: ${a[rowDef.key]}` };
 }
 
-function deltaArrow(n) {
-  if (Math.abs(n) < 0.005) return "—";
-  return n > 0 ? "▲" : "▼";
+function compareRxCellVsPriorYear(planKey, kind, tierName, colIdx) {
+  const prior = SIBLING[planKey];
+  if (!prior) return null;
+  const a = RX[PLANS[prior].rxFamily][kind][tierName];
+  const b = RX[PLANS[planKey].rxFamily][kind][tierName];
+  if (!a || !b) return null;
+  const av = a[colIdx], bv = b[colIdx];
+  if (av === bv) return null;
+  // Try numeric delta
+  const an = parseFloat(String(av).replace(/[^0-9.]/g,""));
+  const bn = parseFloat(String(bv).replace(/[^0-9.]/g,""));
+  if (!isNaN(an) && !isNaN(bn) && /^\$/.test(av) && /^\$/.test(bv)) {
+    const d = bn - an;
+    return { dir: d > 0 ? "up" : "down", html: `was ${av}` };
+  }
+  return { dir: "changed", html: `was: ${av}` };
+}
+
+// Premium delta vs prior-year sibling, at the user's current salary band
+function premiumVsPriorYear(planKey, salary, tier) {
+  const prior = SIBLING[planKey];
+  if (!prior) return null;
+  const a = lookupPremium(prior, salary, tier);
+  const b = lookupPremium(planKey, salary, tier);
+  if (a == null || b == null) return null;
+  return b - a;
 }
 
 // ============================================================
@@ -702,7 +580,7 @@ function renderAltCheckboxes() {
   const container = document.getElementById("alt-options");
   const isNew = state.current === "new";
   const maxAllowed = isNew ? 3 : 2;
-  document.getElementById("alt-label").textContent = `Compare with (up to ${maxAllowed} options)`;
+  document.getElementById("alt-label").textContent = `Compare with (up to ${maxAllowed} option${maxAllowed===1?"":"s"})`;
 
   let html = "";
   for (const key of ALT_PLAN_KEYS) {
@@ -730,100 +608,107 @@ function renderAltCheckboxes() {
   });
 }
 
-function planDesignRows(plan, network) {
-  const n = plan[network];
-  if (!n) return "";
-  return `
-    <div class="kv"><span class="k">Deductible (Ind / Fam)</span><span class="v">${fmtUSD(n.dInd)} / ${fmtUSD(n.dFam)}</span></div>
-    <div class="kv"><span class="k">Out-of-pocket max (Ind / Fam)</span><span class="v">${fmtUSD(n.oopInd)} / ${fmtUSD(n.oopFam)}</span></div>
-    <div class="kv"><span class="k">Coinsurance</span><span class="v">${n.coins}</span></div>
-    <div class="kv"><span class="k">Primary care visit</span><span class="v">${n.pcp}</span></div>
-    <div class="kv"><span class="k">Specialist visit</span><span class="v">${n.spec}</span></div>
-    <div class="kv"><span class="k">Hospital inpatient</span><span class="v">${n.hospIn}</span></div>
-    <div class="kv"><span class="k">Hospital outpatient</span><span class="v">${n.hospOut}</span></div>
-    <div class="kv"><span class="k">Emergency room</span><span class="v">${n.er}</span></div>
-    <div class="kv"><span class="k">Urgent care</span><span class="v">${n.urgent}</span></div>
-  `;
+function renderRowDelta(planKey, isCurrent, network, rowDef) {
+  if (isCurrent) return ""; // baseline row (the 2025 plan): no delta
+  const cmp = compareRowVsPriorYear(planKey, network, rowDef);
+  if (!cmp) return ""; // unchanged
+  const arrow = cmp.dir === "up" ? "▲" : (cmp.dir === "down" ? "▼" : "↻");
+  return `<span class="row-delta ${cmp.dir}">${arrow} ${cmp.html}</span>`;
 }
 
-function rxRows(rxKey) {
-  const rx = RX[rxKey];
-  if (!rx) return "";
-  let h = `<div class="rx-row"><span class="rx-label rx-head">${rx.cadenceLabel}</span><span class="rx-val rx-head">UMMS Pharmacy</span><span class="rx-val rx-head">CVS</span></div>`;
-  for (const r of rx.retail) {
-    h += `<div class="rx-row"><span class="rx-label">${r.tier}</span><span class="rx-val">${r.umms}</span><span class="rx-val">${r.cvs}</span></div>`;
-  }
-  // 90-day section
-  h += `<div class="rx-row" style="margin-top:8px;"><span class="rx-label rx-head">90-day supply</span><span class="rx-val rx-head">UMMS Pharmacy</span><span class="rx-val rx-head">CVS / Mail</span></div>`;
-  for (const r of rx.day90) {
-    if (r.val !== undefined) {
-      h += `<div class="rx-row"><span class="rx-label">${r.tier}</span><span class="rx-val" style="grid-column:span 2;text-align:right;">${r.val}</span></div>`;
-    } else {
-      h += `<div class="rx-row"><span class="rx-label">${r.tier}</span><span class="rx-val">${r.umms}</span><span class="rx-val">${r.cvs}</span></div>`;
-    }
-  }
-  if (rx.day90Note) {
-    h += `<div style="font-size:0.75rem;color:var(--text-faint);margin-top:8px;line-height:1.4;">${rx.day90Note}</div>`;
-  }
-  return h;
+function renderRxDelta(planKey, isCurrent, kind, tierName, colIdx) {
+  if (isCurrent) return "";
+  const cmp = compareRxCellVsPriorYear(planKey, kind, tierName, colIdx);
+  if (!cmp) return "";
+  const arrow = cmp.dir === "up" ? "▲" : (cmp.dir === "down" ? "▼" : "↻");
+  return `<span class="row-delta ${cmp.dir}">${arrow} ${cmp.html}</span>`;
 }
 
-function buildCard({ planKey, isCurrent, biweekly, deltaBi, deltaAnnual }) {
+function planValueForRow(plan, network, rowDef) {
+  const data = plan[network];
+  if (rowDef.kind === "pair") {
+    const [f1, f2] = rowDef.fields;
+    return `${fmtUSD(data[f1])} / ${fmtUSD(data[f2])}`;
+  }
+  return data[rowDef.key];
+}
+
+function buildCardSlots({ planKey, isCurrent, biweekly, currentBi }) {
   const plan = PLANS[planKey];
   const annual = biweekly * 26;
-  const tag = isCurrent ? "Your current plan" : `2026–2027 option`;
-  const tagClass = isCurrent ? "current" : "";
+  const tagText = isCurrent ? "Your current plan" : "2026–2027 option";
   const yearLine = isCurrent ? "2025–2026 plan year" : "2026–2027 plan year";
 
-  let deltaBlock = "";
-  if (!isCurrent && deltaBi !== null) {
-    const cls = deltaClass(deltaBi);
-    const arrow = deltaArrow(deltaBi);
-    const annualSign = deltaAnnual === 0 ? "no change" : `${fmtSigned(deltaAnnual)} per year`;
-    deltaBlock = `
-      <div class="delta ${cls}">${arrow} ${fmtSigned(deltaBi, {cents:true})} per paycheck</div>
-      <div class="delta-detail">${annualSign} vs. your current plan</div>
-    `;
-  } else if (isCurrent) {
-    deltaBlock = `
-      <div class="delta baseline">Baseline — your current premium</div>
-      <div class="delta-detail">Compare 2026 options against this row</div>
-    `;
+  // Premium delta vs current (the user's chosen current plan)
+  let deltaCurrentHtml = "";
+  if (isCurrent) {
+    deltaCurrentHtml = `<span class="delta baseline">Baseline — your current premium</span>`;
+  } else if (currentBi !== null) {
+    const d = biweekly - currentBi;
+    const cls = deltaClass(d);
+    const arrow = deltaArrow(d);
+    const annualD = Math.round(d * 26);
+    const annualSign = annualD === 0 ? "no change" : `${fmtSigned(annualD)} per year`;
+    deltaCurrentHtml = `<span class="delta ${cls}">${arrow} ${fmtSigned(d, {cents:true})} per paycheck</span>
+      <div class="delta-detail">${annualSign} vs. your current plan</div>`;
+  } else {
+    deltaCurrentHtml = `<span class="delta flat">No current plan to compare</span>`;
   }
 
-  const designRows = planDesignRows(plan, state.network);
-  const rxKey = plan.rxFamily;
+  // Premium delta vs prior-year sibling
+  let delta2025Html = "";
+  if (!isCurrent) {
+    const dp = premiumVsPriorYear(planKey, state.salary, state.tier);
+    if (dp !== null && Math.abs(dp) >= 0.005) {
+      const cls = deltaClass(dp);
+      const arrow = deltaArrow(dp);
+      delta2025Html = `<span class="delta small ${cls}">${arrow} ${fmtSigned(dp, {cents:true})} vs 2025 ${plan.label}</span>`;
+    } else if (dp !== null) {
+      delta2025Html = `<span class="delta small flat">No change vs 2025 ${plan.label}</span>`;
+    }
+  }
 
-  return `
-    <div class="card ${isCurrent ? "current" : ""}">
-      <div class="card-head">
-        <span class="plan-tag ${tagClass}">${tag}</span>
-        <span class="plan-name">${plan.label}</span>
-        <span class="plan-meta">${yearLine}</span>
-      </div>
+  // Build slots in order (one slot = one grid row)
+  const slots = [];
+  slots.push(`<div class="slot tag-row"><span class="tag${isCurrent ? " current" : ""}">${tagText}</span></div>`);
+  slots.push(`<div class="slot name">${plan.longLabel}</div>`);
+  slots.push(`<div class="slot meta">${yearLine}</div>`);
+  slots.push(`<div class="slot premium-amount">${fmtUSD(biweekly, {cents:true})}</div>`);
+  slots.push(`<div class="slot premium-cadence">per paycheck (bi-weekly, 26/yr)</div>`);
+  slots.push(`<div class="slot premium-annual"><strong>${fmtUSD(annual)}</strong> per year</div>`);
+  slots.push(`<div class="slot delta-row">${deltaCurrentHtml}</div>`);
+  slots.push(`<div class="slot delta-2025-row">${delta2025Html || "&nbsp;"}</div>`);
 
-      <div class="premium">
-        <div class="premium-amount">${fmtUSD(biweekly, {cents:true})}</div>
-        <div class="premium-cadence">per paycheck (bi-weekly, 26/yr)</div>
-        <div class="premium-annual"><strong>${fmtUSD(annual)}</strong> per year</div>
-        ${deltaBlock}
-      </div>
+  slots.push(`<div class="slot divider"><hr/></div>`);
+  slots.push(`<div class="slot section-label">Plan design — ${networkLabel(state.network)}</div>`);
 
-      <div class="divider"></div>
+  ROW_DEFS.forEach((rd, i) => {
+    const value = planValueForRow(plan, state.network, rd);
+    const delta = renderRowDelta(planKey, isCurrent, state.network, rd);
+    slots.push(`<div class="slot kv${i===0 ? " first-kv" : ""}"><span class="k">${rd.label}</span><span class="v">${value}${delta}</span></div>`);
+  });
 
-      <div>
-        <div class="section-label">Plan design — ${networkLabel(state.network)}</div>
-        ${designRows}
-      </div>
+  slots.push(`<div class="slot divider"><hr/></div>`);
+  slots.push(`<div class="slot section-label">Prescriptions — ${RX[plan.rxFamily].cadence}</div>`);
+  slots.push(`<div class="slot rx-head"><span></span><span>UMMS Pharmacy</span><span>CVS</span></div>`);
+  RX_TIERS.forEach((t, i) => {
+    const v = RX[plan.rxFamily].retail[t];
+    const dUmms = renderRxDelta(planKey, isCurrent, "retail", t, 0);
+    const dCvs = renderRxDelta(planKey, isCurrent, "retail", t, 1);
+    slots.push(`<div class="slot rx-row"><span class="rx-label">${t}</span><span class="rx-val">${v[0]}${dUmms}</span><span class="rx-val">${v[1]}${dCvs}</span></div>`);
+  });
 
-      <div class="divider"></div>
+  slots.push(`<div class="slot rx-head"><span>90-day supply</span><span>UMMS Pharmacy</span><span>CVS / Mail</span></div>`);
+  RX_TIERS_90.forEach((t, i) => {
+    const v = RX[plan.rxFamily].day90[t];
+    const dUmms = renderRxDelta(planKey, isCurrent, "day90", t, 0);
+    const dCvs = renderRxDelta(planKey, isCurrent, "day90", t, 1);
+    slots.push(`<div class="slot rx-row"><span class="rx-label">${t}</span><span class="rx-val">${v[0]}${dUmms}</span><span class="rx-val">${v[1]}${dCvs}</span></div>`);
+  });
 
-      <div>
-        <div class="section-label">Prescription drugs</div>
-        ${rxRows(rxKey)}
-      </div>
-    </div>
-  `;
+  slots.push(`<div class="slot rx-foot last">${RX[plan.rxFamily].foot}</div>`);
+
+  return `<div class="card${isCurrent ? " current" : ""}">${slots.join("")}</div>`;
 }
 
 function networkLabel(net) {
@@ -836,35 +721,32 @@ function renderCards() {
   const container = document.getElementById("cards");
   const isNew = state.current === "new";
 
-  // figure out which plans to show
-  const cards = [];
-
+  const cardData = [];
   let currentBi = null;
   if (!isNew) {
     currentBi = lookupPremium(state.current, state.salary, state.tier);
-    cards.push({ planKey: state.current, isCurrent: true, biweekly: currentBi, deltaBi: null, deltaAnnual: null });
+    cardData.push({ planKey: state.current, isCurrent: true, biweekly: currentBi, currentBi: null });
   }
-
   for (const altKey of state.alts) {
     const bi = lookupPremium(altKey, state.salary, state.tier);
-    const deltaBi = isNew ? null : (bi - currentBi);
-    const deltaAnnual = deltaBi === null ? null : Math.round((deltaBi * 26) * 100) / 100;
-    cards.push({ planKey: altKey, isCurrent: false, biweekly: bi, deltaBi, deltaAnnual });
+    cardData.push({ planKey: altKey, isCurrent: false, biweekly: bi, currentBi });
   }
 
-  if (cards.length === 0 || (isNew && state.alts.length === 0)) {
-    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+  if (cardData.length === 0 || (isNew && state.alts.length === 0)) {
+    container.style.removeProperty("--n-cards");
+    container.innerHTML = `<div class="empty-state">
       <strong>Pick at least one 2026 plan to compare.</strong><br/>
       Use the checkboxes above to add up to ${isNew ? 3 : 2} plan${isNew ? "s" : ""} side by side.
     </div>`;
     return;
   }
 
-  container.innerHTML = cards.map(buildCard).join("");
+  container.style.setProperty("--n-cards", cardData.length);
+  container.innerHTML = cardData.map(buildCardSlots).join("");
 }
 
 // ============================================================
-// INIT + EVENTS
+// INIT
 // ============================================================
 function init() {
   renderSalaryOptions();
@@ -875,21 +757,17 @@ function init() {
     state.tier = parseInt(e.target.value, 10);
     renderCards();
   });
-
   document.getElementById("salary").addEventListener("change", e => {
     state.salary = parseInt(e.target.value, 10);
     renderCards();
   });
-
   document.getElementById("current").addEventListener("change", e => {
     state.current = e.target.value;
-    // when switching to/from "new", trim alts to fit allowed count
     const max = state.current === "new" ? 3 : 2;
     if (state.alts.length > max) state.alts = state.alts.slice(0, max);
     renderAltCheckboxes();
     renderCards();
   });
-
   document.querySelectorAll(".network-toggle button").forEach(btn => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".network-toggle button").forEach(b => b.classList.remove("active"));
