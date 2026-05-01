@@ -108,6 +108,15 @@ select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-col
   padding: 10px 14px; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 18px;
 }
 
+.compare-hint {
+  font-size: 0.82rem; color: var(--text-muted);
+  margin: 0 0 12px; padding: 6px 0;
+}
+.compare-hint .legend { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; }
+.compare-hint .legend.up { color: var(--up); }
+.compare-hint .legend.down { color: var(--down); }
+.compare-hint .legend.changed { color: var(--note); }
+
 /* ============================================================
    CARDS GRID — using CSS subgrid for cross-card row alignment.
    Each card is a column. All cards share row tracks defined on
@@ -281,20 +290,45 @@ footer p { margin: 0 0 8px; }
 .disclaimer-banner strong { font-weight: 700; }
 .disclaimer-banner .icon { display: inline-block; margin-right: 6px; }
 
-/* Glitter trigger — tiny sparkle in the footer */
+/* Glitter trigger — small floating sparkle, bottom-right */
 .glitter-trigger {
-  background: transparent;
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fef9c3, #fbbf24 55%, #f472b6 100%);
   border: 0;
-  font-size: 0.8rem;
-  color: var(--text-faint);
   cursor: pointer;
-  padding: 2px 4px;
-  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.10), 0 0 0 1px rgba(255,255,255,0.6) inset;
+  z-index: 200;
   font-family: inherit;
-  transition: color 0.2s, transform 0.2s;
+  line-height: 1;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  animation: glitter-pulse 5s ease-in-out infinite;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
-.glitter-trigger:hover { color: var(--accent); transform: scale(1.4) rotate(15deg); }
-.glitter-trigger:focus { outline: none; color: var(--accent); }
+.glitter-trigger:hover {
+  transform: scale(1.15) rotate(20deg);
+  box-shadow: 0 6px 18px rgba(244, 114, 182, 0.45), 0 0 0 1px rgba(255,255,255,0.7) inset;
+}
+.glitter-trigger:focus { outline: none; box-shadow: 0 0 0 3px var(--accent-soft), 0 6px 18px rgba(244, 114, 182, 0.4); }
+.glitter-trigger:active { transform: scale(0.92); }
+
+@keyframes glitter-pulse {
+  0%, 100% { box-shadow: 0 2px 6px rgba(0,0,0,0.10), 0 0 0 1px rgba(255,255,255,0.6) inset; }
+  50%      { box-shadow: 0 4px 14px rgba(244, 114, 182, 0.35), 0 0 0 1px rgba(255,255,255,0.7) inset; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitter-trigger { animation: none; }
+}
 
 .glitter-particle {
   position: fixed;
@@ -321,8 +355,9 @@ footer p { margin: 0 0 8px; }
 
 @keyframes glitter-fly {
   0%   { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 1; }
-  15%  { transform: translate(calc(-50% + var(--dx, 0px) * 0.2), calc(-50% + var(--dy, 0px) * 0.1)) scale(1.3) rotate(calc(var(--rot, 0deg) * 0.3)); opacity: 1; }
-  100% { transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px) + 220px)) scale(0.5) rotate(var(--rot, 0deg)); opacity: 0; }
+  10%  { transform: translate(calc(-50% + var(--dx, 0px) * 0.18), calc(-50% + var(--dy, 0px) * 0.12)) scale(1.4) rotate(calc(var(--rot, 0deg) * 0.25)); opacity: 1; }
+  60%  { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px) + 360px)) scale(0.35) rotate(var(--rot, 0deg)); opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -394,12 +429,15 @@ footer p { margin: 0 0 8px; }
   </div>
 </div>
 
+<div id="compare-hint" class="compare-hint"></div>
 <div id="cards" class="cards"></div>
 
 <footer>
   <p><strong>Disclaimer.</strong> This tool produces estimates only, based on the published 2025 and 2026–2027 UMMS Benefits Guides. The official plan documents and Summary Plan Descriptions govern in case of any discrepancy. Premiums shown are pre-tax bi-weekly payroll deductions for full-time team members (FTE 0.90–1.00); part-time, supplemental/PRN, and tobacco-surcharge rates are not modeled. Dental, vision, and other ancillary benefits are not included.</p>
-  <p>Questions about your benefits should be directed to UMMS Human Resources. Salary bands change annually on July 1.<button type="button" class="glitter-trigger" id="glitter-btn" aria-label="A small surprise" title="">✦</button></p>
+  <p>Questions about your benefits should be directed to UMMS Human Resources. Salary bands change annually on July 1.</p>
 </footer>
+
+<button type="button" class="glitter-trigger" id="glitter-btn" aria-label="A small surprise" title="">✨</button>
 
 </div>
 
@@ -583,51 +621,42 @@ function fmtSigned(n, opts={}) {
 function deltaClass(n) { if (Math.abs(n) < 0.005) return "flat"; return n > 0 ? "up" : "down"; }
 function deltaArrow(n) { if (Math.abs(n) < 0.005) return "—"; return n > 0 ? "▲" : "▼"; }
 
-// Compare a row across sibling-year plans. Returns null (unchanged) or
-// { dir: "up|down|changed", html: "...indicator html..." }.
-function compareRowVsPriorYear(planKey, network, rowDef) {
-  const prior = SIBLING[planKey];
-  if (!prior) return null;
-  const a = PLANS[prior][network], b = PLANS[planKey][network];
+// Compare a plan-design row of `planKey` against `refKey` at the same
+// network. Returns null when unchanged or when refKey is missing,
+// otherwise { dir: "up|down|changed", html: "...indicator html..." }.
+function compareRowVsRef(planKey, refKey, network, rowDef) {
+  if (!refKey || refKey === planKey) return null;
+  const a = PLANS[refKey] && PLANS[refKey][network];
+  const b = PLANS[planKey] && PLANS[planKey][network];
   if (!a || !b) return null;
   if (rowDef.kind === "pair") {
     const [f1, f2] = rowDef.fields;
     const dInd = b[f1] - a[f1], dFam = b[f2] - a[f2];
     if (dInd === 0 && dFam === 0) return null;
-    const dir = (dInd > 0 || dFam > 0) ? "up" : (dInd < 0 || dFam < 0 ? "down" : "changed");
-    return { dir, html: `from ${fmtUSD(a[f1])} / ${fmtUSD(a[f2])}` };
+    const dir = (dInd > 0 || dFam > 0) ? "up" : "down";
+    return { dir, html: `vs ${fmtUSD(a[f1])} / ${fmtUSD(a[f2])}` };
   }
-  // text
   if (a[rowDef.key] === b[rowDef.key]) return null;
-  return { dir: "changed", html: `was: ${a[rowDef.key]}` };
+  return { dir: "changed", html: `vs ${a[rowDef.key]}` };
 }
 
-function compareRxCellVsPriorYear(planKey, kind, tierName, colIdx) {
-  const prior = SIBLING[planKey];
-  if (!prior) return null;
-  const a = RX[PLANS[prior].rxFamily][kind][tierName];
-  const b = RX[PLANS[planKey].rxFamily][kind][tierName];
+function compareRxCellVsRef(planKey, refKey, kind, tierName, colIdx) {
+  if (!refKey || refKey === planKey) return null;
+  const refFamily = PLANS[refKey] && PLANS[refKey].rxFamily;
+  const myFamily = PLANS[planKey] && PLANS[planKey].rxFamily;
+  if (!refFamily || !myFamily || refFamily === myFamily) return null;
+  const a = RX[refFamily][kind][tierName];
+  const b = RX[myFamily][kind][tierName];
   if (!a || !b) return null;
   const av = a[colIdx], bv = b[colIdx];
   if (av === bv) return null;
-  // Try numeric delta
-  const an = parseFloat(String(av).replace(/[^0-9.]/g,""));
-  const bn = parseFloat(String(bv).replace(/[^0-9.]/g,""));
+  const an = parseFloat(String(av).replace(/[^0-9.]/g, ""));
+  const bn = parseFloat(String(bv).replace(/[^0-9.]/g, ""));
   if (!isNaN(an) && !isNaN(bn) && /^\$/.test(av) && /^\$/.test(bv)) {
     const d = bn - an;
-    return { dir: d > 0 ? "up" : "down", html: `was ${av}` };
+    return { dir: d > 0 ? "up" : "down", html: `vs ${av}` };
   }
-  return { dir: "changed", html: `was: ${av}` };
-}
-
-// Premium delta vs prior-year sibling, at the user's current salary band
-function premiumVsPriorYear(planKey, salary, tier) {
-  const prior = SIBLING[planKey];
-  if (!prior) return null;
-  const a = lookupPremium(prior, salary, tier);
-  const b = lookupPremium(planKey, salary, tier);
-  if (a == null || b == null) return null;
-  return b - a;
+  return { dir: "changed", html: `vs ${av}` };
 }
 
 // ============================================================
@@ -675,17 +704,17 @@ function renderAltCheckboxes() {
   });
 }
 
-function renderRowDelta(planKey, isCurrent, network, rowDef) {
-  if (isCurrent) return ""; // baseline row (the 2025 plan): no delta
-  const cmp = compareRowVsPriorYear(planKey, network, rowDef);
-  if (!cmp) return ""; // unchanged
+function renderRowDelta(planKey, isCurrent, refKey, network, rowDef) {
+  if (isCurrent || !refKey) return "";
+  const cmp = compareRowVsRef(planKey, refKey, network, rowDef);
+  if (!cmp) return "";
   const arrow = cmp.dir === "up" ? "▲" : (cmp.dir === "down" ? "▼" : "↻");
   return `<span class="row-delta ${cmp.dir}">${arrow} ${cmp.html}</span>`;
 }
 
-function renderRxDelta(planKey, isCurrent, kind, tierName, colIdx) {
-  if (isCurrent) return "";
-  const cmp = compareRxCellVsPriorYear(planKey, kind, tierName, colIdx);
+function renderRxDelta(planKey, isCurrent, refKey, kind, tierName, colIdx) {
+  if (isCurrent || !refKey) return "";
+  const cmp = compareRxCellVsRef(planKey, refKey, kind, tierName, colIdx);
   if (!cmp) return "";
   const arrow = cmp.dir === "up" ? "▲" : (cmp.dir === "down" ? "▼" : "↻");
   return `<span class="row-delta ${cmp.dir}">${arrow} ${cmp.html}</span>`;
@@ -700,42 +729,39 @@ function planValueForRow(plan, network, rowDef) {
   return data[rowDef.key];
 }
 
-function buildCardSlots({ planKey, isCurrent, biweekly, currentBi }) {
+function buildCardSlots({ planKey, isCurrent, biweekly, currentBi, refKey }) {
   const plan = PLANS[planKey];
   const annual = biweekly * 26;
   const tagText = isCurrent ? "Your current plan" : "2026–2027 option";
   const yearLine = isCurrent ? "2025–2026 plan year" : "2026–2027 plan year";
 
-  // Premium delta vs current (the user's chosen current plan)
-  let deltaCurrentHtml = "";
+  // Premium delta vs the user's chosen current plan (or vs 2025 sibling
+  // when the user has no current plan, i.e., new-to-UMMS).
+  let deltaHtml = "";
   if (isCurrent) {
-    deltaCurrentHtml = `<span class="delta baseline">Baseline — your current premium</span>`;
+    deltaHtml = `<span class="delta baseline">Baseline — your current premium</span>`;
   } else if (currentBi !== null) {
     const d = biweekly - currentBi;
     const cls = deltaClass(d);
     const arrow = deltaArrow(d);
     const annualD = Math.round(d * 26);
     const annualSign = annualD === 0 ? "no change" : `${fmtSigned(annualD)} per year`;
-    deltaCurrentHtml = `<span class="delta ${cls}">${arrow} ${fmtSigned(d, {cents:true})} per paycheck</span>
+    deltaHtml = `<span class="delta ${cls}">${arrow} ${fmtSigned(d, {cents:true})} per paycheck</span>
       <div class="delta-detail">${annualSign} vs. your current plan</div>`;
-  } else {
-    deltaCurrentHtml = `<span class="delta flat">No current plan to compare</span>`;
-  }
-
-  // Premium delta vs prior-year sibling
-  let delta2025Html = "";
-  if (!isCurrent) {
-    const dp = premiumVsPriorYear(planKey, state.salary, state.tier);
-    if (dp !== null && Math.abs(dp) >= 0.005) {
-      const cls = deltaClass(dp);
-      const arrow = deltaArrow(dp);
-      delta2025Html = `<span class="delta small ${cls}">${arrow} ${fmtSigned(dp, {cents:true})} vs 2025 ${plan.label}</span>`;
-    } else if (dp !== null) {
-      delta2025Html = `<span class="delta small flat">No change vs 2025 ${plan.label}</span>`;
+  } else if (refKey) {
+    // New-to-UMMS path — show year-over-year change for context
+    const refBi = lookupPremium(refKey, state.salary, state.tier);
+    if (refBi !== null) {
+      const d = biweekly - refBi;
+      const cls = deltaClass(d);
+      const arrow = deltaArrow(d);
+      const annualD = Math.round(d * 26);
+      const annualSign = annualD === 0 ? "no change" : `${fmtSigned(annualD)} per year`;
+      deltaHtml = `<span class="delta ${cls}">${arrow} ${fmtSigned(d, {cents:true})} per paycheck</span>
+        <div class="delta-detail">${annualSign} vs. 2025 ${PLANS[refKey].label}</div>`;
     }
   }
 
-  // Build slots in order (one slot = one grid row)
   const slots = [];
   slots.push(`<div class="slot tag-row"><span class="tag${isCurrent ? " current" : ""}">${tagText}</span></div>`);
   slots.push(`<div class="slot name">${plan.longLabel}</div>`);
@@ -743,33 +769,32 @@ function buildCardSlots({ planKey, isCurrent, biweekly, currentBi }) {
   slots.push(`<div class="slot premium-amount">${fmtUSD(biweekly, {cents:true})}</div>`);
   slots.push(`<div class="slot premium-cadence">per paycheck (bi-weekly, 26/yr)</div>`);
   slots.push(`<div class="slot premium-annual"><strong>${fmtUSD(annual)}</strong> per year</div>`);
-  slots.push(`<div class="slot delta-row">${deltaCurrentHtml}</div>`);
-  slots.push(`<div class="slot delta-2025-row">${delta2025Html || "&nbsp;"}</div>`);
+  slots.push(`<div class="slot delta-row">${deltaHtml}</div>`);
 
   slots.push(`<div class="slot divider"><hr/></div>`);
   slots.push(`<div class="slot section-label">Plan design — ${networkLabel(state.network)}</div>`);
 
   ROW_DEFS.forEach((rd, i) => {
     const value = planValueForRow(plan, state.network, rd);
-    const delta = renderRowDelta(planKey, isCurrent, state.network, rd);
+    const delta = renderRowDelta(planKey, isCurrent, refKey, state.network, rd);
     slots.push(`<div class="slot kv${i===0 ? " first-kv" : ""}"><span class="k">${rd.label}</span><span class="v">${value}${delta}</span></div>`);
   });
 
   slots.push(`<div class="slot divider"><hr/></div>`);
   slots.push(`<div class="slot section-label">Prescriptions — ${RX[plan.rxFamily].cadence}</div>`);
   slots.push(`<div class="slot rx-head"><span></span><span>UMMS Pharmacy</span><span>CVS</span></div>`);
-  RX_TIERS.forEach((t, i) => {
+  RX_TIERS.forEach((t) => {
     const v = RX[plan.rxFamily].retail[t];
-    const dUmms = renderRxDelta(planKey, isCurrent, "retail", t, 0);
-    const dCvs = renderRxDelta(planKey, isCurrent, "retail", t, 1);
+    const dUmms = renderRxDelta(planKey, isCurrent, refKey, "retail", t, 0);
+    const dCvs = renderRxDelta(planKey, isCurrent, refKey, "retail", t, 1);
     slots.push(`<div class="slot rx-row"><span class="rx-label">${t}</span><span class="rx-val">${v[0]}${dUmms}</span><span class="rx-val">${v[1]}${dCvs}</span></div>`);
   });
 
   slots.push(`<div class="slot rx-head"><span>90-day supply</span><span>UMMS Pharmacy</span><span>CVS / Mail</span></div>`);
-  RX_TIERS_90.forEach((t, i) => {
+  RX_TIERS_90.forEach((t) => {
     const v = RX[plan.rxFamily].day90[t];
-    const dUmms = renderRxDelta(planKey, isCurrent, "day90", t, 0);
-    const dCvs = renderRxDelta(planKey, isCurrent, "day90", t, 1);
+    const dUmms = renderRxDelta(planKey, isCurrent, refKey, "day90", t, 0);
+    const dCvs = renderRxDelta(planKey, isCurrent, refKey, "day90", t, 1);
     slots.push(`<div class="slot rx-row"><span class="rx-label">${t}</span><span class="rx-val">${v[0]}${dUmms}</span><span class="rx-val">${v[1]}${dCvs}</span></div>`);
   });
 
@@ -792,11 +817,14 @@ function renderCards() {
   let currentBi = null;
   if (!isNew) {
     currentBi = lookupPremium(state.current, state.salary, state.tier);
-    cardData.push({ planKey: state.current, isCurrent: true, biweekly: currentBi, currentBi: null });
+    cardData.push({ planKey: state.current, isCurrent: true, biweekly: currentBi, currentBi: null, refKey: null });
   }
   for (const altKey of state.alts) {
     const bi = lookupPremium(altKey, state.salary, state.tier);
-    cardData.push({ planKey: altKey, isCurrent: false, biweekly: bi, currentBi });
+    // Reference for per-row deltas: user's current plan when chosen,
+    // otherwise the 2026 plan's 2025 sibling for new-to-UMMS context.
+    const refKey = isNew ? SIBLING[altKey] : state.current;
+    cardData.push({ planKey: altKey, isCurrent: false, biweekly: bi, currentBi, refKey });
   }
 
   if (cardData.length === 0 || (isNew && state.alts.length === 0)) {
@@ -810,6 +838,20 @@ function renderCards() {
 
   container.style.setProperty("--n-cards", cardData.length);
   container.innerHTML = cardData.map(buildCardSlots).join("");
+
+  // Comparison-frame hint above the cards
+  const hint = document.getElementById("compare-hint");
+  if (hint) {
+    let frame = "";
+    if (state.alts.length === 0) {
+      frame = "";
+    } else if (isNew) {
+      frame = `Row changes (<span class="legend up">▲</span><span class="legend down">▼</span><span class="legend changed">↻</span>) compare each 2026 plan to its 2025 predecessor.`;
+    } else {
+      frame = `Row changes (<span class="legend up">▲</span><span class="legend down">▼</span><span class="legend changed">↻</span>) compare each 2026 option to your current <strong>${PLANS[state.current].label}</strong> plan.`;
+    }
+    hint.innerHTML = frame;
+  }
 }
 
 // ============================================================
@@ -854,29 +896,35 @@ function init() {
 }
 
 // ============================================================
-// GLITTER ✦
+// GLITTER ✨
 // ============================================================
 function spawnGlitter(x, y) {
   const colors = [
     "#ff6b9d", "#fbbf24", "#34d399", "#60a5fa",
     "#a78bfa", "#fb7185", "#f472b6", "#facc15",
-    "#22d3ee", "#f97316", "#ec4899", "#84cc16"
+    "#22d3ee", "#f97316", "#ec4899", "#84cc16",
+    "#fde047", "#67e8f9", "#fda4af", "#bef264",
+    "#c084fc", "#fda4af"
   ];
-  const shapes = ["circle", "circle", "square", "star", "star"]; // bias toward circles + stars
-  const count = 110;
+  const shapes = ["circle", "circle", "circle", "circle", "square", "star"];
+  const count = 450;
+  const frag = document.createDocumentFragment();
 
   for (let i = 0; i < count; i++) {
     const p = document.createElement("div");
     const shape = shapes[Math.floor(Math.random() * shapes.length)];
     const color = colors[Math.floor(Math.random() * colors.length)];
-    const size = 4 + Math.random() * 7;
 
-    // Burst direction: spread outward in all directions, slight upward bias
+    // Mostly fine grain, a few accent sparkles
+    const isAccent = Math.random() < 0.07;
+    const size = isAccent ? (5 + Math.random() * 6) : (1.2 + Math.random() * 3.6);
+
+    // Wide spread + upward bias
     const angle = Math.random() * Math.PI * 2;
-    const distance = 120 + Math.random() * 380;
+    const distance = 160 + Math.random() * 720;
     const dx = Math.cos(angle) * distance;
-    const dy = Math.sin(angle) * distance - 80; // upward bias
-    const rot = (Math.random() - 0.5) * 720;
+    const dy = Math.sin(angle) * distance - 110;
+    const rot = (Math.random() - 0.5) * 1080;
 
     p.className = `glitter-particle ${shape}`;
     p.style.left = x + "px";
@@ -887,14 +935,14 @@ function spawnGlitter(x, y) {
     p.style.setProperty("--dx", dx + "px");
     p.style.setProperty("--dy", dy + "px");
     p.style.setProperty("--rot", rot + "deg");
-    p.style.setProperty("--star-size", (size + 6) + "px");
+    p.style.setProperty("--star-size", (size + 5) + "px");
     p.style.setProperty("--star-color", color);
-    p.style.animationDelay = (Math.random() * 0.18) + "s";
+    p.style.animationDelay = (Math.random() * 0.28) + "s";
 
-    document.body.appendChild(p);
-    // Cleanup after animation completes (1.6s + delay buffer)
-    setTimeout(() => p.remove(), 2100);
+    frag.appendChild(p);
+    setTimeout(() => p.remove(), 2600);
   }
+  document.body.appendChild(frag);
 }
 
 document.addEventListener("DOMContentLoaded", init);
