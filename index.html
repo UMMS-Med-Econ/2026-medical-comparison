@@ -335,7 +335,7 @@ footer p { margin: 0 0 8px; }
   pointer-events: none;
   z-index: 9999;
   will-change: transform, opacity;
-  animation: glitter-fly 1.6s cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
+  animation: glitter-fly 3s forwards;
 }
 .glitter-particle.circle { border-radius: 50%; }
 .glitter-particle.square { border-radius: 1px; }
@@ -353,15 +353,39 @@ footer p { margin: 0 0 8px; }
   text-shadow: 0 0 4px rgba(255,255,255,0.6);
 }
 
+/* Two-phase trajectory:
+   - 0–5%   : pop into view at the button
+   - 5–25%  : rapid burst out to a randomized apex point across the
+              upper portion of the viewport (decelerating)
+   - 25–100%: gravity-driven fall past the bottom of the viewport
+              (accelerating into a slow trickle), fading at the end. */
 @keyframes glitter-fly {
-  0%   { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 1; }
-  10%  { transform: translate(calc(-50% + var(--dx, 0px) * 0.18), calc(-50% + var(--dy, 0px) * 0.12)) scale(1.4) rotate(calc(var(--rot, 0deg) * 0.25)); opacity: 1; }
-  60%  { opacity: 1; }
-  100% { transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px) + 360px)) scale(0.35) rotate(var(--rot, 0deg)); opacity: 0; }
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    opacity: 1;
+    animation-timing-function: linear;
+  }
+  5% {
+    transform: translate(-50%, -50%) scale(1.5) rotate(0deg);
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.18, 0.82, 0.34, 1);
+  }
+  25% {
+    transform: translate(calc(-50% + var(--apex-dx, 0px)), calc(-50% + var(--apex-dy, 0px))) scale(1.15) rotate(calc(var(--rot, 0deg) * 0.25));
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.65, 0.7);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--end-dx, 0px)), calc(-50% + var(--end-dy, 0px))) scale(0.5) rotate(var(--rot, 0deg));
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .glitter-particle { animation-duration: 0.4s; }
+  .glitter-particle { animation-duration: 0.5s; }
 }
 </style>
 </head>
@@ -897,17 +921,23 @@ function init() {
 
 // ============================================================
 // GLITTER ✨
+// Two-phase trajectory: rapid burst up + outward to a randomized
+// apex spread across the entire viewport, then a gravity-driven
+// trickle down past the bottom. ~3 seconds total.
 // ============================================================
-function spawnGlitter(x, y) {
+function spawnGlitter(originX, originY) {
   const colors = [
     "#ff6b9d", "#fbbf24", "#34d399", "#60a5fa",
     "#a78bfa", "#fb7185", "#f472b6", "#facc15",
     "#22d3ee", "#f97316", "#ec4899", "#84cc16",
     "#fde047", "#67e8f9", "#fda4af", "#bef264",
-    "#c084fc", "#fda4af"
+    "#c084fc", "#f9a8d4"
   ];
   const shapes = ["circle", "circle", "circle", "circle", "square", "star"];
-  const count = 450;
+  const count = 800;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
   const frag = document.createDocumentFragment();
 
   for (let i = 0; i < count; i++) {
@@ -916,31 +946,46 @@ function spawnGlitter(x, y) {
     const color = colors[Math.floor(Math.random() * colors.length)];
 
     // Mostly fine grain, a few accent sparkles
-    const isAccent = Math.random() < 0.07;
-    const size = isAccent ? (5 + Math.random() * 6) : (1.2 + Math.random() * 3.6);
+    const isAccent = Math.random() < 0.05;
+    const size = isAccent ? (5 + Math.random() * 6) : (1.2 + Math.random() * 3.5);
 
-    // Wide spread + upward bias
-    const angle = Math.random() * Math.PI * 2;
-    const distance = 160 + Math.random() * 720;
-    const dx = Math.cos(angle) * distance;
-    const dy = Math.sin(angle) * distance - 110;
+    // Apex: randomized across the full window width and across the
+    // upper ~60% of the viewport. Each particle's apex is its own
+    // spot on the way out — together they span the browser window.
+    const apexX = Math.random() * w;
+    const apexY = 30 + Math.random() * Math.max(180, h * 0.6);
+
+    // End: small horizontal drift from apex, then fall past the
+    // bottom edge. Variable end-y means particles fall at slightly
+    // different rates within the same animation duration, giving a
+    // "trickle" feel.
+    const endX = apexX + (Math.random() - 0.5) * 260;
+    const endY = h + 60 + Math.random() * 160;
+
+    const apexDx = apexX - originX;
+    const apexDy = apexY - originY;
+    const endDx = endX - originX;
+    const endDy = endY - originY;
     const rot = (Math.random() - 0.5) * 1080;
 
     p.className = `glitter-particle ${shape}`;
-    p.style.left = x + "px";
-    p.style.top = y + "px";
+    p.style.left = originX + "px";
+    p.style.top = originY + "px";
     p.style.width = size + "px";
     p.style.height = size + "px";
     p.style.background = color;
-    p.style.setProperty("--dx", dx + "px");
-    p.style.setProperty("--dy", dy + "px");
+    p.style.setProperty("--apex-dx", apexDx + "px");
+    p.style.setProperty("--apex-dy", apexDy + "px");
+    p.style.setProperty("--end-dx", endDx + "px");
+    p.style.setProperty("--end-dy", endDy + "px");
     p.style.setProperty("--rot", rot + "deg");
     p.style.setProperty("--star-size", (size + 5) + "px");
     p.style.setProperty("--star-color", color);
-    p.style.animationDelay = (Math.random() * 0.28) + "s";
+    // Small stagger so the burst looks continuous, not lock-step
+    p.style.animationDelay = (Math.random() * 0.18) + "s";
 
     frag.appendChild(p);
-    setTimeout(() => p.remove(), 2600);
+    setTimeout(() => p.remove(), 3300);
   }
   document.body.appendChild(frag);
 }
